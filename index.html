@@ -1,0 +1,4347 @@
+<!DOCTYPE html>
+<html lang="es">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="#6757e8" name="theme-color"/>
+  <title>
+   Sagaz Study
+  </title>
+  <style>
+   :root {
+      --bg: #f6f7fb;
+      --surface: #fff;
+      --surface-2: #f0f1f8;
+      --text: #202137;
+      --muted: #73758c;
+      --border: #e5e6ef;
+      --primary: #6757e8;
+      --primary-hover: #5544d5;
+      --primary-soft: #eeebff;
+      --green: #16845b;
+      --green-soft: #e4f7ee;
+      --red: #c43f52;
+      --red-soft: #fff0f1;
+      --amber: #a66b05;
+      --amber-soft: #fff5dc;
+      --shadow: 0 10px 30px rgba(34,32,75,.07);
+      --radius: 18px;
+    }
+    body.dark {
+      --bg: #11121b;
+      --surface: #1b1d2a;
+      --surface-2: #252738;
+      --text: #f1f1fa;
+      --muted: #a3a5bd;
+      --border: #303247;
+      --primary: #9387ff;
+      --primary-hover: #a69cff;
+      --primary-soft: #302b50;
+      --green: #6ed6a9;
+      --green-soft: #203b34;
+      --red: #ff8d9c;
+      --red-soft: #40232c;
+      --amber: #f4c66c;
+      --amber-soft: #3c3220;
+      --shadow: 0 10px 30px rgba(0,0,0,.16);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height: 1.5;
+      transition: background .2s,color .2s;
+    }
+    button,input,textarea,select {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+    a {
+      color: var(--primary);
+    }
+    .hidden {
+      display: none !important;
+    }
+    .muted {
+      color: var(--muted);
+    }
+    .small {
+      font-size: .86rem;
+    }
+    .eyebrow {
+      font-size: .76rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .auth-shell {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: radial-gradient(circle at 15% 15%,var(--primary-soft),transparent 35%),var(--bg);
+    }
+    .auth-card {
+      width: min(100%,440px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      font-size: 1.35rem;
+      letter-spacing: -.04em;
+    }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: white;
+      font-weight: 900;
+      font-size: 1.25rem;
+      box-shadow: 0 8px 20px color-mix(in srgb,var(--primary) 30%,transparent);
+    }
+    .auth-card h1 {
+      font-size: 1.8rem;
+      line-height: 1.15;
+      margin: 28px 0 8px;
+      letter-spacing: -.04em;
+    }
+    .auth-card p {
+      color: var(--muted);
+      margin-top: 0;
+    }
+    .form-stack {
+      display: grid;
+      gap: 14px;
+    }
+    .field {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+    }
+    .field label {
+      font-weight: 700;
+      font-size: .88rem;
+    }
+    .field input,.field textarea,.field select,.input {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 13px;
+      outline: none;
+      transition: border .15s,box-shadow .15s;
+    }
+    .field textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+    .field input:focus,.field textarea:focus,.field select:focus,.input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb,var(--primary) 15%,transparent);
+    }
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-weight: 750;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform .15s,background .15s;
+      white-space: nowrap;
+    }
+    .btn:active {
+      transform: scale(.98);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    .btn-ghost:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+    .btn-danger {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+    .btn-success {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+    .btn-small {
+      padding: 7px 10px;
+      border-radius: 9px;
+      font-size: .84rem;
+    }
+    .btn-block {
+      width: 100%;
+    }
+    .auth-switch {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 18px;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+    .link-button {
+      border: 0;
+      background: none;
+      color: var(--primary);
+      font-weight: 800;
+      padding: 0;
+    }
+    .app {
+      min-height: 100vh;
+    }
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 250px;
+      padding: 22px 16px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 20;
+      transition: transform .2s;
+    }
+    .sidebar .brand {
+      padding: 0 8px 24px;
+    }
+    .nav-label {
+      padding: 13px 10px 7px;
+      color: var(--muted);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 850;
+    }
+    .nav-list {
+      display: grid;
+      gap: 5px;
+    }
+    .nav-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: left;
+    }
+    .nav-item:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+    .nav-item.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+    .nav-icon {
+      width: 24px;
+      text-align: center;
+      font-size: 1.08rem;
+    }
+    .sidebar-bottom {
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+    .user-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 8px;
+      min-width: 0;
+    }
+    .avatar {
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 900;
+    }
+    .user-info {
+      min-width: 0;
+      flex: 1;
+    }
+    .user-info strong,.user-info span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .user-info strong {
+      font-size: .88rem;
+    }
+    .user-info span {
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    .main {
+      margin-left: 250px;
+      min-height: 100vh;
+      padding: 30px clamp(18px,3vw,44px) 60px;
+      max-width: 1700px;
+    }
+    .mobile-top {
+      display: none;
+    }
+    .page {
+      display: none;
+      animation: fade .18s ease;
+    }
+    .page.active {
+      display: block;
+    }
+    @keyframes fade {
+      from {
+        opacity: .5;
+        transform: translateY(3px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+    .page-header h1 {
+      margin: 0;
+      font-size: clamp(1.7rem,3vw,2.35rem);
+      letter-spacing: -.055em;
+      line-height: 1.15;
+    }
+    .page-header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 28px 0 14px;
+    }
+    .section-title h2 {
+      font-size: 1.1rem;
+      margin: 0;
+      letter-spacing: -.025em;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+    .stats-grid {
+      grid-template-columns: repeat(4,minmax(0,1fr));
+    }
+    .stat-card,.panel,.subject-card,.feature-card,.agenda-day,.empty-state {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .stat-card {
+      padding: 19px;
+    }
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: .86rem;
+      font-weight: 700;
+    }
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      display: grid;
+      place-items: center;
+      font-size: 1.12rem;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 850;
+      letter-spacing: -.06em;
+      margin-top: 12px;
+    }
+    .stat-foot {
+      font-size: .8rem;
+      color: var(--muted);
+    }
+    .two-col {
+      grid-template-columns: minmax(0,1.3fr) minmax(280px,.7fr);
+    }
+    .panel {
+      padding: 20px;
+      min-width: 0;
+    }
+    .panel h2,.panel h3 {
+      margin: 0 0 14px;
+      letter-spacing: -.03em;
+    }
+    .quick-grid {
+      grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+    .quick-action {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px;
+      background: var(--surface);
+      text-align: left;
+      color: var(--text);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .quick-action:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .quick-action .big-icon {
+      font-size: 1.3rem;
+    }
+    .quick-action strong,.quick-action span {
+      display: block;
+    }
+    .quick-action span {
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .subject-grid {
+      grid-template-columns: repeat(3,minmax(0,1fr));
+    }
+    .subject-card {
+      padding: 19px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      min-height: 185px;
+      box-shadow: none;
+    }
+    .subject-card:hover {
+      border-color: color-mix(in srgb,var(--primary) 55%,var(--border));
+    }
+    .subject-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .subject-symbol {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--primary-soft);
+      font-size: 1.3rem;
+    }
+    .subject-card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    .subject-card p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+    .subject-card-buttons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .subject-config-button {
+      min-width: 38px;
+      padding-inline: 10px;
+    }
+    .subject-icon-large {
+      width: 56px;
+      height: 56px;
+      flex: 0 0 56px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--primary-soft);
+      font-size: 1.8rem;
+    }
+    .grade-subject-explorer {
+      margin-bottom: 20px;
+    }
+    .grade-detail-header {
+      align-items: center;
+      margin-top: 14px;
+    }
+    .grade-detail-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .grade-detail-stats {
+      margin: 18px 0;
+    }
+    .grade-detail-section {
+      margin-top: 18px;
+    }
+    .grade-detail-closures {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+    }
+    .grade-detail-closures h3 {
+      margin: 0 0 10px;
+    }
+    .grade-detail-closure-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 0;
+      border-top: 1px solid var(--border);
+    }
+    .grade-detail-closure-row:first-of-type {
+      border-top: 0;
+    }
+    .grade-detail-closure-row span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    .note-bloc-preview {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      max-height: 7.5em;
+      overflow: hidden;
+      line-height: 1.55;
+    }
+    .emoji-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(7,minmax(0,1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .emoji-choice {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1.45rem;
+      cursor: pointer;
+      transition: border-color .15s ease,background .15s ease,transform .15s ease;
+    }
+    .emoji-choice:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .emoji-choice.selected {
+      border: 2px solid var(--primary);
+      background: var(--primary-soft);
+    }
+    .credits-layout {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 16px;
+    }
+    .credits-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .credits-mark {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: var(--primary-soft);
+      font-size: 1.8rem;
+    }
+    .credits-card h2,.credits-card p {
+      margin: 0;
+    }
+    .credits-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      color: var(--primary);
+      font-weight: 650;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .credits-link:hover { text-decoration: underline; }
+    .subject-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: auto;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: .75rem;
+      font-weight: 800;
+      background: var(--surface-2);
+      color: var(--muted);
+    }
+    .pill.primary {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+    .pill.green {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+    .pill.amber {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+    .pill.red {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .toolbar .field {
+      min-width: 190px;
+      flex: 1;
+    }
+    .toolbar input,.toolbar select {
+      max-width: 100%;
+    }
+    .subject-detail {
+      display: none;
+    }
+    .subject-detail.active {
+      display: block;
+    }
+    .back-link {
+      border: 0;
+      background: none;
+      color: var(--primary);
+      font-weight: 800;
+      padding: 0;
+      margin-bottom: 15px;
+    }
+    .area-grid {
+      grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+    .area-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+    }
+    .area-card h3 {
+      margin: 0 0 4px;
+    }
+    .area-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+    .area-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 14px;
+    }
+    .feature-grid {
+      grid-template-columns: repeat(3,minmax(0,1fr));
+    }
+    .feature-card {
+      padding: 20px;
+      box-shadow: none;
+    }
+    .feature-card .feature-icon {
+      font-size: 1.5rem;
+    }
+    .feature-card h3 {
+      margin: 9px 0 4px;
+    }
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+    .feature-entry {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      gap: 14px;
+      justify-content: space-between;
+      align-items: flex-start;
+      background: var(--surface);
+      margin-bottom: 10px;
+    }
+    .entry-main {
+      min-width: 0;
+      flex: 1;
+    }
+    .entry-main h3 {
+      margin: 0 0 5px;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
+    }
+    .entry-main p {
+      margin: 0;
+      color: var(--muted);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .feature-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+    .entry-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .entry-actions .btn {
+      font-size: .8rem;
+    }
+    .entry-form {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 12px;
+    }
+    .empty-state {
+      padding: 34px 20px;
+      text-align: center;
+      box-shadow: none;
+      border-style: dashed;
+    }
+    .empty-state .empty-icon {
+      font-size: 2rem;
+    }
+    .empty-state h3 {
+      margin: 10px 0 5px;
+    }
+    .empty-state p {
+      color: var(--muted);
+      margin: 0 auto 15px;
+      max-width: 430px;
+    }
+    .agenda-list {
+      display: grid;
+      gap: 15px;
+    }
+    .agenda-day {
+      padding: 17px 18px;
+      box-shadow: none;
+    }
+    .agenda-date {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-weight: 850;
+    }
+    .agenda-date .date-label {
+      font-size: .98rem;
+    }
+    .agenda-items {
+      display: grid;
+      gap: 9px;
+    }
+    .agenda-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--surface-2);
+    }
+    .agenda-marker {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .agenda-marker.task {
+      background: var(--amber);
+    }
+    .agenda-marker.grade {
+      background: #4d9ad6;
+    }
+    .agenda-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .agenda-content strong {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+    .agenda-content span {
+      display: block;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    .filter-chip {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--surface);
+      color: var(--muted);
+      font-weight: 750;
+    }
+    .filter-chip.active {
+      background: var(--primary-soft);
+      border-color: var(--primary-soft);
+      color: var(--primary);
+    }
+    .notice {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--amber-soft);
+      color: var(--amber);
+      font-size: .86rem;
+      margin-bottom: 14px;
+    }
+    .toast-area {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 100;
+      display: grid;
+      gap: 8px;
+      width: min(390px,calc(100vw - 40px));
+    }
+    .toast {
+      background: var(--text);
+      color: var(--surface);
+      padding: 13px 16px;
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+      animation: fade .2s;
+    }
+    .toast.error {
+      background: var(--red);
+    }
+    .toast.success {
+      background: var(--green);
+      color: #fff;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,8,20,.48);
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+    .modal {
+      width: min(100%,540px);
+      max-height: 90vh;
+      overflow: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 23px;
+      box-shadow: var(--shadow);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .modal-close {
+      border: 0;
+      background: var(--surface-2);
+      color: var(--text);
+      border-radius: 10px;
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .loading {
+      opacity: .65;
+      pointer-events: none;
+    }
+    .avatar {
+      overflow: hidden;
+      object-fit: cover;
+    }
+    .avatar img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+    .average-formula-panel {
+      margin: 0 0 26px;
+      padding: 17px 20px;
+      box-shadow: none;
+    }
+    .average-formula-heading {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+    .average-formula-heading h2 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+    }
+    .average-formula-heading p {
+      margin: 0;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+    .subject-average-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 13px;
+      margin-top: 18px;
+    }
+    .subject-average-card {
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+    }
+    .subject-average-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
+    }
+    .subject-average-card .subject-average-count {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    .subject-average-card .subject-average-score {
+      margin-top: 15px;
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -.055em;
+      line-height: 1.1;
+    }
+    .subject-average-card .subject-average-score small {
+      color: var(--muted);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    .subject-average-card .subject-average-formula {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: .8rem;
+      overflow-wrap: anywhere;
+    }
+    .subject-average-card .feature-meta {
+      margin-top: 12px;
+    }
+    .subject-average-empty {
+      grid-column: 1 / -1;
+    }
+    .term-section {
+      margin: 8px 0 30px;
+    }
+    .term-section-heading {
+      margin-top: 0;
+      align-items: flex-end;
+    }
+    .term-section-heading h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .term-section-heading p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .term-year-toolbar {
+      max-width: 240px;
+      margin: 0 0 15px;
+    }
+    .term-year-toolbar .field {
+      flex: 1;
+      min-width: 180px;
+    }
+    .term-note {
+      margin: -4px 0 14px;
+      max-width: 900px;
+    }
+    .term-report-grid {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 16px;
+      align-items: start;
+    }
+    .term-card {
+      min-width: 0;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .term-card-header {
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(120deg,var(--primary-soft),transparent 85%);
+    }
+    .term-card-header h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    .term-card-header p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    .term-stats {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 8px;
+      padding: 13px 16px;
+    }
+    .term-stat {
+      min-width: 0;
+      padding: 10px;
+      background: var(--surface-2);
+      border-radius: 12px;
+    }
+    .term-stat span,.term-stat strong {
+      display: block;
+    }
+    .term-stat span {
+      color: var(--muted);
+      font-size: .72rem;
+    }
+    .term-stat strong {
+      margin-top: 4px;
+      font-size: 1.18rem;
+      overflow-wrap: anywhere;
+    }
+    .term-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding: 0 14px 15px;
+    }
+    .term-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .8rem;
+    }
+    .term-table th,.term-table td {
+      padding: 10px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .term-table th {
+      color: var(--muted);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .term-table td {
+      overflow-wrap: anywhere;
+    }
+    .term-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+    .term-table .grade-value {
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .term-subheading {
+      margin: 6px 16px 8px;
+      font-size: .83rem;
+    }
+    .term-area-summary {
+      padding-bottom: 12px;
+    }
+    .grade-closure-panel {
+      margin: 18px 0 22px;
+      padding: 20px;
+    }
+    .grade-closure-heading {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .grade-closure-heading h2 {
+      margin: 0 0 5px;
+      font-size: 1.08rem;
+    }
+    .grade-closure-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .grade-closure-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(165px,1fr));
+      gap: 13px;
+      align-items: end;
+      padding: 0;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+    }
+    .grade-closure-form .field {
+      min-width: 0;
+    }
+    .grade-closure-form .closure-note-field {
+      grid-column: span 2;
+    }
+    .grade-closure-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      grid-column: 1 / -1;
+    }
+    .grade-closures-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 16px;
+    }
+    .grade-closure-entry {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-2);
+    }
+    .grade-closure-entry-main {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+    .grade-closure-entry-main strong {
+      overflow-wrap: anywhere;
+    }
+    .grade-closure-entry-main span {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    .grade-closure-entry-score {
+      color: var(--primary);
+      font-weight: 850;
+      font-size: 1.15rem;
+      white-space: nowrap;
+    }
+    .grade-closure-entry-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .grade-closure-hint {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+    .closure-not-set {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+    .hidden-area-label {
+      color: var(--muted);
+    }
+    .profile-layout {
+      display: grid;
+      grid-template-columns: minmax(250px,.75fr) minmax(0,1.25fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .profile-preview-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 15px;
+      padding: 30px 22px;
+    }
+    .profile-preview-avatar {
+      width: 116px;
+      height: 116px;
+      border-radius: 34px;
+      font-size: 2.7rem;
+    }
+    .profile-preview-copy h2 {
+      margin: 8px 0 6px;
+      font-size: 1.25rem;
+      overflow-wrap: anywhere;
+    }
+    .profile-preview-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .profile-form {
+      display: grid;
+      gap: 16px;
+      box-shadow: none;
+    }
+    .profile-form h2 {
+      margin: 0;
+    }
+    .profile-form-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+    .profile-storage-note {
+      margin: 0;
+    }
+    .mobile-overlay {
+      display: none;
+    }
+    @media (max-width:1150px) {
+      .subject-average-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+      .subject-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+      .feature-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width:760px) {
+      .subject-average-grid {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .sidebar {
+        transform: translateX(-105%);
+        width: 270px;
+        box-shadow: var(--shadow);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .mobile-overlay.open {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.35);
+        z-index: 15;
+      }
+      .main {
+        margin-left: 0;
+        padding: 16px 15px 40px;
+      }
+      .mobile-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 23px;
+      }
+      .mobile-top .brand {
+        font-size: 1.1rem;
+      }
+      .mobile-top .brand-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+      }
+      .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        margin-bottom: 22px;
+      }
+      .page-header .header-actions {
+        justify-content: flex-start;
+      }
+      .stats-grid {
+        gap: 10px;
+      }
+      .stat-card {
+        padding: 14px;
+      }
+      .stat-number {
+        font-size: 1.65rem;
+      }
+      .grade-closure-form .closure-note-field {
+        grid-column: 1 / -1;
+      }
+      .subject-grid,.area-grid,.feature-grid,.term-report-grid,.profile-layout {
+        grid-template-columns: 1fr;
+      }
+      .term-stats {
+        grid-template-columns: repeat(3,minmax(0,1fr));
+      }
+      .profile-preview-panel {
+        padding: 22px 16px;
+      }
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+      .panel {
+        padding: 16px;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .feature-entry {
+        flex-direction: column;
+      }
+      .entry-actions {
+        justify-content: flex-start;
+      }
+      .toolbar {
+        align-items: stretch;
+      }
+      .toolbar .field {
+        min-width: 100%;
+      }
+      .auth-card {
+        padding: 24px;
+      }
+      .page-header h1 {
+        font-size: 1.8rem;
+      }
+    }
+    @media (max-width: 680px) {
+      .emoji-picker-grid {
+        grid-template-columns: repeat(5,minmax(0,1fr));
+      }
+      .credits-layout {
+        grid-template-columns: 1fr;
+      }
+      .grade-detail-title-wrap {
+        align-items: flex-start;
+      }
+      .grade-detail-header {
+        align-items: flex-start;
+      }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+ </head>
+ <body>
+  <section class="auth-shell" id="authScreen">
+   <div class="auth-card">
+    <div class="brand">
+     <div class="brand-mark">
+      S
+     </div>
+     <span>
+      Sagaz Study
+     </span>
+    </div>
+    <h1 id="authTitle">
+     Estudiá con más claridad.
+    </h1>
+    <p id="authDescription">
+     Organizá tus materias, apuntes, notas y próximas evaluaciones en un solo lugar.
+    </p>
+    <form class="form-stack" id="authForm">
+     <div class="field">
+      <label for="authEmail">
+       Correo electrónico
+      </label>
+      <input autocomplete="email" id="authEmail" placeholder="vos@correo.com" required="" type="email"/>
+     </div>
+     <div class="field">
+      <label for="authPassword">
+       Contraseña
+      </label>
+      <input autocomplete="current-password" id="authPassword" minlength="6" placeholder="Mínimo 6 caracteres" required="" type="password"/>
+     </div>
+     <button class="btn btn-primary btn-block" id="authSubmit" type="submit">
+      Iniciar sesión
+     </button>
+    </form>
+    <div class="auth-switch">
+     <span id="authSwitchText">
+      ¿Todavía no tenés cuenta?
+     </span>
+     <button class="link-button" id="authSwitch" type="button">
+      Crear cuenta
+     </button>
+    </div>
+    <p class="small muted" style="margin:18px 0 0;text-align:center">
+     Tu cuenta y tus datos se gestionan con Supabase.
+    </p>
+   </div>
+  </section>
+  <div class="app hidden" id="app">
+   <div class="mobile-overlay" id="mobileOverlay">
+   </div>
+   <aside class="sidebar" id="sidebar">
+    <div class="brand">
+     <div class="brand-mark">
+      S
+     </div>
+     <span>
+      Sagaz Study
+     </span>
+    </div>
+    <div class="nav-label">
+     Principal
+    </div>
+    <nav aria-label="Navegación principal" class="nav-list">
+     <button class="nav-item active" data-page="home">
+      <span class="nav-icon">
+       ⌂
+      </span>
+      Inicio
+     </button>
+     <button class="nav-item" data-page="subjects">
+      <span class="nav-icon">
+       ▤
+      </span>
+      Materias
+     </button>
+     <button class="nav-item" data-page="notes">
+      <span class="nav-icon">
+       ✎
+      </span>
+      Apuntes
+     </button>
+     <button class="nav-item" data-page="grades">
+      <span class="nav-icon">
+       ◈
+      </span>
+      Calificaciones
+     </button>
+     <button class="nav-item" data-page="tasks">
+      <span class="nav-icon">
+       ✓
+      </span>
+      Tareas y recordatorios
+     </button>
+     <button class="nav-item" data-page="agenda">
+      <span class="nav-icon">
+       ▦
+      </span>
+      Agenda
+     </button>
+    </nav>
+    <div class="nav-label">
+     Preferencias
+    </div>
+    <nav class="nav-list">
+     <button class="nav-item" data-page="profile">
+      <span class="nav-icon">👤</span>
+      Personalización
+     </button>
+     <button class="nav-item" id="themeToggle">
+      <span class="nav-icon" id="themeIcon">
+       ☾
+      </span>
+      <span id="themeText">
+       Tema oscuro
+      </span>
+     </button>
+    </nav>
+    <div class="nav-label">
+     Acerca de
+    </div>
+    <nav class="nav-list" aria-label="Información de Sagaz Study">
+     <button class="nav-item" data-page="credits">
+      <span class="nav-icon">✦</span>
+      Créditos
+     </button>
+    </nav>
+    <div class="sidebar-bottom">
+     <div class="user-mini">
+      <div class="avatar" id="userAvatar">
+       S
+      </div>
+      <div class="user-info">
+       <strong id="userDisplayName">
+        Usuario
+       </strong>
+       <span id="userEmailText">
+        Tu espacio de estudio
+       </span>
+      </div>
+     </div>
+     <button class="nav-item" id="logoutBtn">
+      <span class="nav-icon">
+       ↪
+      </span>
+      Cerrar sesión
+     </button>
+    </div>
+   </aside>
+   <main class="main">
+    <div class="mobile-top">
+     <button aria-label="Abrir menú" class="btn btn-secondary btn-small" id="menuToggle">
+      ☰
+     </button>
+     <div class="brand">
+      <div class="brand-mark">
+       S
+      </div>
+      <span>
+       Sagaz Study
+      </span>
+     </div>
+     <button aria-label="Cambiar tema" class="btn btn-secondary btn-small" id="mobileThemeToggle">
+      ☾
+     </button>
+    </div>
+    <section class="page active" id="page-home">
+     <header class="page-header">
+      <div>
+       <div class="eyebrow">
+        Tu espacio de estudio
+       </div>
+       <h1 id="welcomeTitle">
+        ¡Hola! 👋
+       </h1>
+       <p>
+        Todo lo que necesitás para organizarte, en un mismo lugar.
+       </p>
+      </div>
+      <div class="header-actions">
+       <button class="btn btn-primary" data-action="new-subject">
+        ＋ Nueva materia
+       </button>
+      </div>
+     </header>
+     <div class="grid stats-grid">
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Materias
+        </span>
+        <span class="stat-icon">
+         📚
+        </span>
+       </div>
+       <div class="stat-number" id="statSubjects">
+        0
+       </div>
+       <div class="stat-foot">
+        En tu organización
+       </div>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Apuntes
+        </span>
+        <span class="stat-icon">
+         📝
+        </span>
+       </div>
+       <div class="stat-number" id="statNotes">
+        0
+       </div>
+       <div class="stat-foot">
+        Material guardado
+       </div>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Materias calificadas
+        </span>
+        <span class="stat-icon">
+         📊
+        </span>
+       </div>
+       <div class="stat-number" id="statAverage">
+        0
+       </div>
+       <div class="stat-foot">
+        Cada materia tiene su propio promedio
+       </div>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Pendientes
+        </span>
+        <span class="stat-icon">
+         ⏳
+        </span>
+       </div>
+       <div class="stat-number" id="statTasks">
+        0
+       </div>
+       <div class="stat-foot">
+        Tareas sin completar
+       </div>
+      </article>
+     </div>
+     <div class="grid two-col" style="margin-top:24px">
+      <section>
+       <div class="section-title">
+        <h2>
+         Tus materias
+        </h2>
+        <button class="btn btn-ghost btn-small" data-page="subjects">
+         Ver todas →
+        </button>
+       </div>
+       <div class="grid subject-grid" id="homeSubjects">
+       </div>
+      </section>
+      <section>
+       <div class="section-title">
+        <h2>
+         Accesos rápidos
+        </h2>
+       </div>
+       <div class="grid quick-grid">
+        <button class="quick-action" data-action="new-note">
+         <span class="big-icon">
+          📝
+         </span>
+         <div>
+          <strong>
+           Nuevo apunte
+          </strong>
+          <span>
+           Guardá una explicación o resumen
+          </span>
+         </div>
+        </button>
+        <button class="quick-action" data-action="new-grade">
+         <span class="big-icon">
+          📊
+         </span>
+         <div>
+          <strong>
+           Cargar calificación
+          </strong>
+          <span>
+           Registrá una nota de examen
+          </span>
+         </div>
+        </button>
+        <button class="quick-action" data-action="new-task">
+         <span class="big-icon">
+          ✅
+         </span>
+         <div>
+          <strong>
+           Crear recordatorio
+          </strong>
+          <span>
+           No te olvides de una entrega
+          </span>
+         </div>
+        </button>
+        <button class="quick-action" data-page="agenda">
+         <span class="big-icon">
+          🗓️
+         </span>
+         <div>
+          <strong>
+           Abrir agenda
+          </strong>
+          <span>
+           Revisá tus fechas importantes
+          </span>
+         </div>
+        </button>
+       </div>
+       <div class="section-title">
+        <h2>
+         Lo próximo
+        </h2>
+        <button class="btn btn-ghost btn-small" data-page="agenda">
+         Ver agenda →
+        </button>
+       </div>
+       <div id="homeUpcoming">
+       </div>
+      </section>
+     </div>
+    </section>
+    <section class="page" id="page-subjects">
+     <div id="subjectsListView">
+      <header class="page-header">
+       <div>
+        <div class="eyebrow">
+         Organización
+        </div>
+        <h1>
+         Materias
+        </h1>
+        <p>
+         Creá tus materias y agrupá áreas, profesores y recursos.
+        </p>
+       </div>
+       <div class="header-actions">
+        <button class="btn btn-primary" data-action="new-subject">
+         ＋ Nueva materia
+        </button>
+       </div>
+      </header>
+      <div class="toolbar">
+       <div class="field">
+        <input aria-label="Buscar materia" id="subjectSearch" placeholder="Buscar una materia…" type="search"/>
+       </div>
+      </div>
+      <div class="grid subject-grid" id="subjectsGrid">
+      </div>
+     </div>
+     <div class="subject-detail" id="subjectDetailView">
+      <button class="back-link" id="backSubjects">
+       ← Volver a materias
+      </button>
+      <header class="page-header">
+       <div>
+        <div class="eyebrow">
+         Detalle de materia
+        </div>
+        <div class="grade-detail-title-wrap">
+         <div class="subject-icon-large" id="detailSubjectIcon">📘</div>
+         <h1 id="detailSubjectName">
+          Materia
+         </h1>
+        </div>
+        <p id="detailSubjectDescription">
+         Organizá sus áreas y recursos.
+        </p>
+       </div>
+       <div class="header-actions">
+        <button class="btn btn-secondary" id="editSubjectBtn">
+         Editar materia
+        </button>
+        <button class="btn btn-secondary" data-action="customize-subject" data-subject-id="">
+         ⚙️ Configurar ícono
+        </button>
+        <button class="btn btn-danger" id="deleteSubjectBtn">
+         Eliminar materia
+        </button>
+        <button class="btn btn-primary" id="addAreaBtn">
+         ＋ Agregar área
+        </button>
+       </div>
+      </header>
+      <div class="grid feature-grid" style="margin-bottom:22px">
+       <button class="feature-card" data-action="subject-notes">
+        <div class="feature-icon">
+         📝
+        </div>
+        <h3>
+         Apuntes
+        </h3>
+        <p>
+         Consultá o agregá material para esta materia.
+        </p>
+       </button>
+       <button class="feature-card" data-action="subject-grades">
+        <div class="feature-icon">
+         📊
+        </div>
+        <h3>
+         Calificaciones
+        </h3>
+        <p>
+         Revisá tus notas y tu promedio.
+        </p>
+       </button>
+       <button class="feature-card" data-action="subject-tasks">
+        <div class="feature-icon">
+         ✅
+        </div>
+        <h3>
+         Tareas
+        </h3>
+        <p>
+         Administrá entregas y recordatorios.
+        </p>
+       </button>
+      </div>
+      <div class="section-title">
+       <h2>
+        Áreas y profesores
+       </h2>
+       <span class="pill" id="areaCount">
+        0 áreas
+       </span>
+      </div>
+      <div class="grid area-grid" id="areasGrid">
+      </div>
+     </div>
+    </section>
+    <section class="page" id="page-notes">
+     <header class="page-header">
+      <div>
+       <div class="eyebrow">
+        Material de estudio
+       </div>
+       <h1>
+        Apuntes
+       </h1>
+       <p>
+        Guardá resúmenes, ideas y explicaciones por materia o área.
+       </p>
+      </div>
+      <div class="header-actions">
+       <button class="btn btn-primary" data-action="new-note">
+        ＋ Nuevo apunte
+       </button>
+      </div>
+     </header>
+     <div class="toolbar">
+      <div class="field">
+       <input id="noteSearch" placeholder="Buscar apuntes…" type="search"/>
+      </div>
+      <div class="field">
+       <select aria-label="Filtrar apuntes por área" id="noteAreaFilter">
+        <option value="all">
+         Todas las áreas
+        </option>
+       </select>
+      </div>
+     </div>
+     <div id="notesList">
+     </div>
+    </section>
+    <section class="page" id="page-grades">
+     <header class="page-header">
+      <div>
+       <div class="eyebrow">
+        Seguimiento académico
+       </div>
+       <h1>
+        Calificaciones
+       </h1>
+       <p>
+        Registrá exámenes, trabajos prácticos y otras notas.
+       </p>
+      </div>
+      <div class="header-actions">
+       <button class="btn btn-primary" data-action="new-grade">
+        ＋ Nueva calificación
+       </button>
+      </div>
+     </header>
+     <section class="panel grade-subject-explorer" aria-labelledby="gradeSubjectPickerTitle">
+      <div id="gradeSubjectPickerView">
+       <div class="section-title">
+        <div>
+         <h2 id="gradeSubjectPickerTitle">Entrá en una materia</h2>
+         <p>Elegí una materia para ver únicamente sus evaluaciones, notas y cierres del profesor.</p>
+        </div>
+       </div>
+       <div class="grid subject-grid" id="gradeSubjectPicker" aria-live="polite"></div>
+      </div>
+      <div id="gradeSubjectDetailView" class="hidden">
+       <button class="back-link" id="backGradeSubjects" type="button">← Volver a todas las materias</button>
+       <header class="page-header grade-detail-header">
+        <div class="grade-detail-title-wrap">
+         <div class="subject-icon-large" id="gradeDetailIcon">📘</div>
+         <div>
+          <h2 id="gradeDetailName">Materia</h2>
+          <p id="gradeDetailSubtitle">Notas y evaluaciones de esta materia.</p>
+         </div>
+        </div>
+        <div class="header-actions">
+         <button class="btn btn-primary" data-action="new-grade">＋ Nueva calificación</button>
+        </div>
+       </header>
+       <div class="grid stats-grid grade-detail-stats">
+        <article class="stat-card">
+         <div class="stat-top"><span id="gradeDetailAverageLabel">Promedio de la materia</span><span class="stat-icon">🧮</span></div>
+         <div class="stat-number" id="gradeDetailAverage">—</div>
+         <div class="stat-foot" id="gradeDetailAverageFoot">Todas las áreas de esta materia</div>
+        </article>
+        <article class="stat-card">
+         <div class="stat-top"><span>Evaluaciones</span><span class="stat-icon">📊</span></div>
+         <div class="stat-number" id="gradeDetailCount">0</div>
+         <div class="stat-foot">Notas registradas en esta materia</div>
+        </article>
+        <article class="stat-card">
+         <div class="stat-top"><span>Aprobadas</span><span class="stat-icon">✓</span></div>
+         <div class="stat-number" id="gradeDetailPassed">0</div>
+         <div class="stat-foot">Calificaciones de 7 o más</div>
+        </article>
+       </div>
+       <section class="grade-detail-closures grade-detail-section" id="gradeDetailClosures"></section>
+       <section class="grade-detail-section">
+        <div class="section-title">
+         <div><h3>Notas y evaluaciones</h3><p>Solo se muestran registros de esta materia.</p></div>
+        </div>
+        <div id="gradeSubjectGradesList"></div>
+       </section>
+      </div>
+     </section>
+     <div id="gradesOverviewView">
+     <div class="grid stats-grid" style="margin-bottom:20px">
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Materias con notas
+        </span>
+        <span class="stat-icon">
+         ◈
+        </span>
+       </div>
+       <div class="stat-number" id="gradeSubjectCount">
+        0
+       </div>
+       <div class="stat-foot">
+        Cada materia tiene su propio promedio
+       </div>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Notas registradas
+        </span>
+        <span class="stat-icon">
+         ▤
+        </span>
+       </div>
+       <div class="stat-number" id="gradeCount">
+        0
+       </div>
+       <div class="stat-foot">
+        Todas las materias
+       </div>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Aprobadas
+        </span>
+        <span class="stat-icon">
+         ✓
+        </span>
+       </div>
+       <div class="stat-number" id="gradePassed">
+        0
+       </div>
+       <div class="stat-foot">
+        Notas de 7 o más
+       </div>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top">
+        <span>
+         Por debajo de 7
+        </span>
+        <span class="stat-icon">
+         ↗
+        </span>
+       </div>
+       <div class="stat-number" id="gradeLow">
+        0
+       </div>
+       <div class="stat-foot">
+        Notas para revisar
+       </div>
+      </article>
+     </div>
+     <section class="panel average-formula-panel" aria-labelledby="subjectAverageTitle">
+      <div class="average-formula-heading">
+       <span class="stat-icon">🧮</span>
+       <div>
+        <h2 id="subjectAverageTitle">Promedio por materia</h2>
+        <p>Cada promedio se calcula por separado: se suman las notas de una materia y se dividen por la cantidad de calificaciones de esa misma materia. Si una materia tiene varias áreas, se cuentan todas juntas.</p>
+       </div>
+      </div>
+      <div class="subject-average-grid" id="subjectGradeAverages" aria-live="polite"></div>
+     </section>
+     <section class="term-section" aria-labelledby="termReportTitle">
+      <div class="section-title term-section-heading">
+       <div>
+        <h2 id="termReportTitle">Planilla por cuatrimestre</h2>
+        <p>Seguimiento de tus notas y promedio en cada período.</p>
+       </div>
+      </div>
+      <p class="small muted term-note">El año lectivo y el cuatrimestre se eligen manualmente al cargar o editar cada nota. Así podés registrar evaluaciones de cuatrimestres pasados sin depender de la fecha de evaluación.</p>
+      <div class="toolbar term-year-toolbar">
+       <div class="field">
+        <label for="gradeYearFilter">Año lectivo</label>
+        <select id="gradeYearFilter" aria-label="Elegir año lectivo"></select>
+       </div>
+      </div>
+      <div class="term-report-grid" id="termReport"></div>
+     </section>
+      <section class="panel grade-closure-panel" aria-labelledby="gradeClosureTitle">
+       <div class="grade-closure-heading">
+        <span class="stat-icon">🎓</span>
+        <div>
+         <h2 id="gradeClosureTitle">Cierre del cuatrimestre del profesor</h2>
+         <p>Registrá manualmente con qué nota te cerró el profesor cada materia. Esta nota oficial queda separada del promedio matemático de tus evaluaciones.</p>
+        </div>
+       </div>
+       <form class="grade-closure-form" id="gradeClosureForm" novalidate>
+        <div class="field">
+         <label for="gradeClosureSubject">Materia</label>
+         <select id="gradeClosureSubject" required>
+          <option value="">Elegí una materia…</option>
+         </select>
+        </div>
+        <div class="field hidden" id="gradeClosureAreaField">
+         <label for="gradeClosureArea">Área</label>
+         <select id="gradeClosureArea">
+          <option value="">Elegí un área…</option>
+         </select>
+         <span class="small muted">Si la materia tiene áreas, elegí dónde corresponde este cierre.</span>
+        </div>
+        <div class="field">
+         <label for="gradeClosureYear">Año lectivo</label>
+         <select id="gradeClosureYear" required>
+          <option value="">Elegí el año…</option>
+         </select>
+        </div>
+        <div class="field">
+         <label for="gradeClosureTerm">Cuatrimestre</label>
+         <select id="gradeClosureTerm" required>
+          <option value="">Elegí el cuatrimestre…</option>
+          <option value="first">Primer cuatrimestre</option>
+          <option value="second">Segundo cuatrimestre</option>
+         </select>
+        </div>
+        <div class="field">
+         <label for="gradeClosureScore">Nota de cierre (0 a 10)</label>
+         <input id="gradeClosureScore" type="number" min="0" max="10" step="0.01" required placeholder="Ej. 7" />
+        </div>
+        <div class="field closure-note-field">
+         <label for="gradeClosureNote">Observación (opcional)</label>
+         <input id="gradeClosureNote" maxlength="180" placeholder="Ej. El profesor me cerró con 7" />
+        </div>
+        <div class="grade-closure-actions">
+         <button class="btn btn-primary" id="gradeClosureSave" type="submit">Guardar cierre del profesor</button>
+         <button class="btn btn-secondary hidden" id="gradeClosureClear" type="button">Quitar cierre guardado</button>
+        </div>
+       </form>
+       <p class="grade-closure-hint">El cierre no modifica tus notas individuales ni el promedio calculado. Se guarda en este navegador para tu usuario y no requiere cambios en Supabase.</p>
+       <div class="grade-closures-list" id="gradeClosuresList" aria-live="polite"></div>
+      </section>
+      <div class="toolbar">
+       <div class="field">
+        <input id="gradeSearch" placeholder="Buscar evaluaciones…" type="search"/>
+      </div>
+      <div class="field">
+       <select aria-label="Filtrar calificaciones por área" id="gradeAreaFilter">
+        <option value="all">
+         Todas las áreas
+        </option>
+       </select>
+      </div>
+     </div>
+     <div id="gradesList">
+     </div>
+     </div>
+    </section>
+    <section class="page" id="page-tasks">
+     <header class="page-header">
+      <div>
+       <div class="eyebrow">
+        Pendientes y entregas
+       </div>
+       <h1>
+        Tareas y recordatorios
+       </h1>
+       <p>
+        Tené claras las entregas que vienen y marcá lo que ya terminaste.
+       </p>
+      </div>
+      <div class="header-actions">
+       <button class="btn btn-primary" data-action="new-task">
+        ＋ Nueva tarea
+       </button>
+      </div>
+     </header>
+     <div class="filter-row">
+      <button class="filter-chip active" data-task-filter="pending">
+       Pendientes
+      </button>
+      <button class="filter-chip" data-task-filter="all">
+       Todas
+      </button>
+      <button class="filter-chip" data-task-filter="completed">
+       Completadas
+      </button>
+     </div>
+     <div class="toolbar">
+      <div class="field">
+       <input id="taskSearch" placeholder="Buscar tareas…" type="search"/>
+      </div>
+      <div class="field">
+       <select aria-label="Filtrar tareas por área" id="taskAreaFilter">
+        <option value="all">
+         Todas las áreas
+        </option>
+       </select>
+      </div>
+     </div>
+     <div id="tasksList">
+     </div>
+    </section>
+    <section class="page" id="page-agenda">
+     <header class="page-header">
+      <div>
+       <div class="eyebrow">
+        Planificación
+       </div>
+       <h1>
+        Agenda
+       </h1>
+       <p>
+        Vista cronológica de tus tareas pendientes y evaluaciones.
+       </p>
+      </div>
+      <div class="header-actions">
+       <button class="btn btn-secondary" data-action="new-grade">
+        ＋ Evaluación
+       </button>
+       <button class="btn btn-primary" data-action="new-task">
+        ＋ Recordatorio
+       </button>
+      </div>
+     </header>
+     <div class="toolbar">
+      <div class="field">
+       <select aria-label="Rango de agenda" id="agendaRange">
+        <option value="all">
+         Todas las fechas
+        </option>
+        <option value="7">
+         Próximos 7 días
+        </option>
+        <option value="30">
+         Próximos 30 días
+        </option>
+       </select>
+      </div>
+      <div class="field">
+       <select aria-label="Filtrar agenda por área" id="agendaAreaFilter">
+        <option value="all">
+         Todas las áreas
+        </option>
+       </select>
+      </div>
+     </div>
+     <div class="agenda-list" id="agendaList">
+     </div>
+    </section>
+    <section class="page" id="page-credits">
+     <header class="page-header">
+      <div>
+       <div class="eyebrow">Acerca del proyecto</div>
+       <h1>Créditos</h1>
+       <p>Las personas detrás de Sagaz Study.</p>
+      </div>
+     </header>
+     <div class="credits-layout">
+      <article class="panel credits-card">
+       <div class="credits-mark">✦</div>
+       <span class="pill primary">Fundador</span>
+       <h2>Santy Mignone</h2>
+       <p class="muted">Fundador y creador de Sagaz Study.</p>
+      </article>
+      <article class="panel credits-card">
+       <div class="credits-mark">💬</div>
+       <h2>Discord</h2>
+       <p class="muted">Encontrame como:</p>
+       <button class="link-button credits-link" id="copyDiscordCredit" type="button">santyno_mignone · Copiar usuario</button>
+      </article>
+      <article class="panel credits-card">
+       <div class="credits-mark">📸</div>
+       <h2>Instagram</h2>
+       <p class="muted">Seguime en:</p>
+       <a class="credits-link" href="https://www.instagram.com/santyno_mignone/" target="_blank" rel="noopener noreferrer">@santyno_mignone ↗</a>
+      </article>
+     </div>
+    </section>
+    <section class="page" id="page-profile">
+     <header class="page-header">
+      <div>
+       <div class="eyebrow">Tu cuenta</div>
+       <h1>Personalización</h1>
+       <p>Elegí cómo querés que Sagaz Study te salude y qué foto aparece en tu perfil.</p>
+      </div>
+     </header>
+     <div class="profile-layout">
+      <section class="panel profile-preview-panel">
+       <div class="profile-preview-avatar avatar" id="profilePhotoPreview" aria-label="Vista previa de la foto de perfil">S</div>
+       <div class="profile-preview-copy">
+        <span class="eyebrow">Vista previa</span>
+        <h2 id="profilePreviewGreeting">¡Hola, estudiante! 👋</h2>
+        <p>Así vas a aparecer en el panel principal y en el menú lateral.</p>
+       </div>
+      </section>
+      <form class="panel profile-form" id="profileForm">
+       <h2>Tu perfil</h2>
+       <div class="field">
+        <label for="profileName">¿Cómo querés que te llamemos?</label>
+        <input id="profileName" name="profileName" maxlength="40" autocomplete="nickname" required placeholder="Ej. Santy" />
+        <span class="small muted">Este nombre reemplaza el nombre automático del correo en el saludo.</span>
+       </div>
+       <div class="field">
+        <label for="profilePhoto">Foto de perfil</label>
+        <input id="profilePhoto" name="profilePhoto" type="file" accept="image/*" />
+        <span class="small muted">Se recorta al centro y se comprime para ocupar poco espacio. Máximo 8 MB por archivo.</span>
+       </div>
+       <div class="profile-form-actions">
+        <button class="btn btn-secondary" id="removeProfilePhoto" type="button">Quitar foto</button>
+        <button class="btn btn-primary" type="submit">Guardar personalización</button>
+       </div>
+       <p class="small muted profile-storage-note">La personalización se guarda en este navegador y dispositivo. No requiere modificar Supabase.</p>
+      </form>
+     </div>
+    </section>
+   </main>
+  </div>
+  <div aria-labelledby="modalTitle" aria-modal="true" class="modal-backdrop hidden" id="modalBackdrop" role="dialog">
+   <div class="modal">
+    <div class="modal-header">
+     <h2 id="modalTitle">
+      Formulario
+     </h2>
+     <button aria-label="Cerrar" class="modal-close" id="modalClose" type="button">
+      ×
+     </button>
+    </div>
+    <div id="modalBody">
+    </div>
+    <div class="modal-actions" id="modalActions">
+    </div>
+   </div>
+  </div>
+  <div aria-live="polite" class="toast-area" id="toastArea">
+  </div>
+  <script type="module">
+   import {
+         supabase
+      }
+       from './src/supabase.js';
+      const $ = (selector,
+       root = document) => root.querySelector(selector);
+      const $$ = (selector,
+       root = document) => [...root.querySelectorAll(selector)];
+      const state = {
+         user:null,
+         page:'home',
+         subjects:[],
+         areas:[],
+         notes:[],
+         grades:[],
+         tasks:[],
+         selectedSubject:null,
+         selectedAreaId:null,
+         selectedGradeSubjectId:null,
+         subjectIcons:{},
+         authMode:'login',
+         taskFilter:'pending',
+         modalSubmit:null,
+         theme:'light',
+         profile:{displayName:'',avatarDataUrl:''},
+         profilePhotoDraft:'',
+         gradePeriods:{},
+         gradeClosures:{}
+      };
+      const tableNames = {
+         subjects:'subjects',
+         areas:'areas',
+         notes:'notes',
+         grades:'grades',
+         tasks:'tasks'
+      };
+      const escapeHTML = (value='') => String(value).replace(/[&<>"']/g,
+       ch => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+      }
+      [ch]));
+      const todayISO = () => {
+         const d = new Date();
+         d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+         return d.toISOString().slice(0,
+        10);
+         };
+      const parseDate = value => value ? new Date(`${value}T12:00:00`) : null;
+      const formatDate = value => {
+         const d = parseDate(value);
+         return d && !Number.isNaN(d.getTime()) ? new Intl.DateTimeFormat('es-AR',
+        {
+          day:'numeric',
+          month:'short',
+          year:'numeric'
+        }).format(d) : 'Fecha no asignada';
+         };
+      const formatLongDate = value => {
+         const d = parseDate(value);
+         return d && !Number.isNaN(d.getTime()) ? new Intl.DateTimeFormat('es-AR',
+        {
+          weekday:'long',
+          day:'numeric',
+          month:'long',
+          year:'numeric'
+        }).format(d) : 'Sin fecha';
+         };
+      const INTERNAL_NO_AREA_NAME = '__sagaz_internal_no_area__';
+      const areaById = id => state.areas.find(a => a.id === id);
+      const subjectById = id => state.subjects.find(s => s.id === id);
+      function isNoAreaFallbackArea(area) {
+        if (!area) return false;
+        if (area.name === INTERNAL_NO_AREA_NAME) return true;
+        // Compatibilidad con la fila de respaldo que versiones anteriores creaban en materias simples.
+        const subject=subjectById(area.subject_id);
+        return Boolean(subject && !subject.is_divided && String(area.name || '').trim().toLowerCase() === 'general' && !String(area.teacher || '').trim());
+      }
+      function visibleAreasForSubject(subjectId) {
+        return state.areas.filter(area => area.subject_id === subjectId && !isNoAreaFallbackArea(area));
+      }
+      function getNoAreaFallbackForSubject(subjectId) {
+        return state.areas.find(area => area.subject_id === subjectId && isNoAreaFallbackArea(area)) || null;
+      }
+      function getSubjectForArea(areaId) {
+        const area = areaById(areaId);
+        return area ? subjectById(area.subject_id) : null;
+      }
+      function areaLabel(areaId) {
+        const area = areaById(areaId);
+        if (!area) return 'Sin área';
+        const subject = subjectById(area.subject_id);
+        if (isNoAreaFallbackArea(area)) return subject?.name || 'Sin área';
+        return `${subject?.name || 'Materia'} · ${area.name}`;
+      }
+      function displayAreaName(areaId) {
+        const area = areaById(areaId);
+        return area && !isNoAreaFallbackArea(area) ? area.name : 'Sin área';
+      }
+      const scopedAreas = () => state.selectedSubject ? visibleAreasForSubject(state.selectedSubject.id) : state.areas.filter(area => !isNoAreaFallbackArea(area));
+      function toast(message,
+       type='') {
+         const el = document.createElement('div');
+         el.className = `toast ${type}`;
+         el.textContent = message;
+         $('#toastArea').append(el);
+         setTimeout(() => el.remove(),
+         4200);
+         }
+      function setBusy(element,
+       busy) {
+         if (!element) return;
+         element.disabled = Boolean(busy);
+         element.classList.toggle('loading',
+         Boolean(busy));
+         }
+      async function runSafely(fn,
+       successMessage) {
+         try {
+           await fn();
+           if (successMessage) toast(successMessage,
+          'success');
+           }
+         catch (error) {
+           console.error(error);
+           toast(error?.message || 'Ocurrió un error. Revisá la conexión e intentá de nuevo.',
+          'error');
+           }
+         }
+      function emptyState(icon,
+       title,
+       description,
+       actionLabel='',
+       action='') {
+         return `<div class="empty-state"><div class="empty-icon">${icon}</div><h3>${escapeHTML(title)}</h3><p>${escapeHTML(description)}</p>${actionLabel ? `<button class="btn btn-primary" data-action="${escapeHTML(action)}">${escapeHTML(actionLabel)}</button>` : ''}</div>`;
+         }
+      function setAuthMode(mode) {
+         state.authMode = mode;
+         const login = mode === 'login';
+         $('#authTitle').textContent = login ? 'Estudiá con más claridad.' : 'Creá tu espacio de estudio.';
+         $('#authDescription').textContent = login ? 'Organizá tus materias, apuntes, notas y próximas evaluaciones en un solo lugar.' : 'Registrate para empezar a organizar tus materias y tareas.';
+         $('#authSubmit').textContent = login ? 'Iniciar sesión' : 'Crear cuenta';
+         $('#authSwitchText').textContent = login ? '¿Todavía no tenés cuenta?' : '¿Ya tenés una cuenta?';
+         $('#authSwitch').textContent = login ? 'Crear cuenta' : 'Iniciar sesión';
+         $('#authPassword').autocomplete = login ? 'current-password' : 'new-password';
+         }
+      function showAuth() {
+         state.user = null;
+         state.subjects=[];
+         state.areas=[];
+         state.notes=[];
+         state.grades=[];
+         state.tasks=[];
+         state.selectedSubject=null;
+         state.selectedAreaId=null;
+         state.selectedGradeSubjectId=null;
+         state.subjectIcons={};
+         state.profile={displayName:'',avatarDataUrl:''};
+         state.profilePhotoDraft='';
+         state.gradePeriods={};
+         state.gradeClosures={};
+         $('#app').classList.add('hidden');
+         $('#authScreen').classList.remove('hidden');
+         }
+      async function signInOrUp(event) {
+         event.preventDefault();
+         const email = $('#authEmail').value.trim();
+         const password = $('#authPassword').value;
+         const btn = $('#authSubmit');
+         setBusy(btn,
+        true);
+         try {
+           const result = state.authMode === 'login' ? await supabase.auth.signInWithPassword({
+            email,
+            password
+          }) : await supabase.auth.signUp({
+            email,
+            password
+          });
+           if (result.error) throw result.error;
+           if (state.authMode === 'signup' && !result.data.session) {
+             toast('Cuenta creada. Si Supabase pide confirmar el correo, revisá tu bandeja de entrada.',
+            'success');
+             setAuthMode('login');
+             return;
+             }
+           if (result.data.user) {
+             state.user=result.data.user;
+             await enterApp();
+             }
+           }
+         catch (e) {
+           toast(e.message || 'No se pudo autenticar.',
+          'error');
+           }
+         finally {
+           setBusy(btn,
+          false);
+           }
+         }
+      async function enterApp() {
+         if (!state.user) return;
+         $('#authScreen').classList.add('hidden');
+         $('#app').classList.remove('hidden');
+         loadProfileSettings();
+         loadSubjectIcons();
+         loadGradePeriodAssignments();
+         loadGradeClosures();
+         renderProfileIdentity();
+         await loadAllData();
+         showPage('home');
+         }
+      function profileKey() {
+        return state.user ? `sagaz-study-profile:${state.user.id}` : null;
+      }
+      function subjectIconsStorageKey() {
+        return state.user ? `sagaz-study-subject-icons:${state.user.id}` : null;
+      }
+      function loadSubjectIcons() {
+        const key=subjectIconsStorageKey();
+        try {
+          const saved=key ? localStorage.getItem(key) : null;
+          const parsed=saved ? JSON.parse(saved) : {};
+          state.subjectIcons=parsed && typeof parsed==='object' && !Array.isArray(parsed) ? parsed : {};
+        } catch(error) {
+          console.warn('No se pudieron cargar los íconos personalizados de las materias.',error);
+          state.subjectIcons={};
+        }
+      }
+      function saveSubjectIcons() {
+        const key=subjectIconsStorageKey();
+        if(!key)throw new Error('Iniciá sesión para personalizar las materias.');
+        localStorage.setItem(key,JSON.stringify(state.subjectIcons));
+      }
+      function subjectIcon(subjectId) {
+        return state.subjectIcons?.[subjectId] || '📘';
+      }
+      const SUBJECT_EMOJIS = [
+        '📘','📚','🧮','🔬','🧪','🧬','🌎','🗺️','📜','✍️','📖','📝','🧠','🎨',
+        '🎭','🎵','🎼','🏛️','⚗️','📐','📏','📊','💻','🖥️','🔢','➗','⚙️','🌱',
+        '🌿','🧲','💡','🗣️','🧾','🏆','⭐','🌟','🧩','🔭','🎹','🏀','⚽','🧭',
+        '🧱','🪴','✏️','🖊️','📎','🧑‍🔬','🧑‍🏫','🌐','🛠️','💬','🔍','🧷','📅'
+      ];
+      function openSubjectCustomizationModal(subject) {
+        if(!subject) {
+          toast('Elegí una materia para configurar su ícono.','error');
+          return;
+        }
+        let selectedEmoji=subjectIcon(subject.id);
+        const choices=SUBJECT_EMOJIS.map(emoji=>`<button class="emoji-choice ${emoji===selectedEmoji?'selected':''}" type="button" data-subject-emoji="${escapeHTML(emoji)}" aria-label="Elegir ${escapeHTML(emoji)}" aria-pressed="${emoji===selectedEmoji?'true':'false'}">${emoji}</button>`).join('');
+        openModal(`Configuración de ${subject.name}`,
+          `<div class="entry-form"><p class="muted">Elegí un emoji de esta paleta integrada en Sagaz Study. No se abre el teclado ni el selector de emojis del dispositivo.</p><div class="subject-icon-large" style="margin:0 auto 8px" id="subjectEmojiPreview">${escapeHTML(selectedEmoji)}</div><div class="emoji-picker-grid" id="subjectEmojiPicker">${choices}</div></div>`,
+          'Guardar ícono',
+          async()=> {
+            const previous=state.subjectIcons[subject.id];
+            state.subjectIcons[subject.id]=selectedEmoji;
+            try {
+              saveSubjectIcons();
+              closeModal();
+              renderSubjectGrids();
+              renderSubjectDetail();
+              renderGrades();
+              toast(`Ícono de ${subject.name} actualizado.`,'success');
+            } catch(error) {
+              if(previous===undefined)delete state.subjectIcons[subject.id];
+              else state.subjectIcons[subject.id]=previous;
+              throw error;
+            }
+          });
+        $$('#subjectEmojiPicker [data-subject-emoji]').forEach(button=>button.addEventListener('click',()=> {
+          selectedEmoji=button.dataset.subjectEmoji;
+          $$('#subjectEmojiPicker [data-subject-emoji]').forEach(choice=> {
+            const isSelected=choice.dataset.subjectEmoji===selectedEmoji;
+            choice.classList.toggle('selected',isSelected);
+            choice.setAttribute('aria-pressed',String(isSelected));
+          });
+          $('#subjectEmojiPreview').textContent=selectedEmoji;
+        }));
+      }
+      function gradePeriodStorageKey() {
+        return state.user ? `sagaz-study-grade-periods:${state.user.id}` : null;
+      }
+      function loadGradePeriodAssignments() {
+        const key=gradePeriodStorageKey();
+        try {
+          const stored=key ? localStorage.getItem(key) : null;
+          const parsed=stored ? JSON.parse(stored) : {};
+          state.gradePeriods=parsed && typeof parsed==='object' && !Array.isArray(parsed) ? parsed : {};
+        } catch(error) {
+          console.warn('No se pudieron cargar las asignaciones de cuatrimestres de este navegador.',error);
+          state.gradePeriods={};
+        }
+      }
+      function saveGradePeriodAssignments() {
+        const key=gradePeriodStorageKey();
+        if(!key)throw new Error('Iniciá sesión para guardar el cuatrimestre de la calificación.');
+        localStorage.setItem(key,JSON.stringify(state.gradePeriods));
+      }
+      function gradeClosureStorageKey() {
+        return state.user ? `sagaz-study-grade-closures:${state.user.id}` : null;
+      }
+      function loadGradeClosures() {
+        const key=gradeClosureStorageKey();
+        try {
+          const stored=key ? localStorage.getItem(key) : null;
+          const parsed=stored ? JSON.parse(stored) : {};
+          state.gradeClosures=parsed && typeof parsed==='object' && !Array.isArray(parsed) ? parsed : {};
+        } catch(error) {
+          console.warn('No se pudieron cargar los cierres del profesor guardados en este navegador.',error);
+          state.gradeClosures={};
+        }
+      }
+      function saveGradeClosures() {
+        const key=gradeClosureStorageKey();
+        if(!key)throw new Error('Iniciá sesión para guardar el cierre del profesor.');
+        localStorage.setItem(key,JSON.stringify(state.gradeClosures));
+      }
+      function gradeClosureKey(subjectId,year,term,areaId='') {
+        return areaId
+          ? `${subjectId}::${year}::${term}::${areaId}`
+          : `${subjectId}::${year}::${term}`;
+      }
+      function gradeClosureFor(subjectId,year,term,areaId='') {
+        return state.gradeClosures[gradeClosureKey(subjectId,String(year),term,areaId)] || null;
+      }
+      async function ensureNoAreaFallback(subjectId) {
+        const subject=subjectById(subjectId);
+        if(!subject)throw new Error('La materia seleccionada ya no está disponible.');
+        if(visibleAreasForSubject(subjectId).length)throw new Error('Esta materia tiene áreas configuradas. Elegí el área correspondiente.');
+        const existing=getNoAreaFallbackForSubject(subjectId);
+        if(existing)return existing.id;
+        const {data,error}=await supabase.from('areas').insert({
+          subject_id:subjectId,
+          user_id:state.user.id,
+          name:INTERNAL_NO_AREA_NAME,
+          teacher:''
+        }).select().single();
+        if(error)throw new Error('No se pudo asociar el registro a la materia. Revisá los permisos de acceso de Supabase: '+error.message);
+        state.areas.push(data);
+        return data.id;
+      }
+      async function resolveAreaSelection(selection) {
+        const prefix='__subject_no_area__:';
+        if(String(selection||'').startsWith(prefix)) {
+          const subjectId=String(selection).slice(prefix.length);
+          if(!subjectById(subjectId))throw new Error('Elegí una materia válida.');
+          return ensureNoAreaFallback(subjectId);
+        }
+        const area=areaById(selection);
+        if(!area || isNoAreaFallbackArea(area))throw new Error('Elegí un área o una materia sin áreas.');
+        return area.id;
+      }
+      function gradePeriodFor(grade) {
+        const assignment=grade?.id ? state.gradePeriods[grade.id] : null;
+        if(!assignment || !/^\d{4}$/.test(String(assignment.year||'')) || !['first','second'].includes(assignment.term))return null;
+        return {year:String(assignment.year),term:assignment.term};
+      }
+      function gradePeriodLabel(grade) {
+        const assignment=gradePeriodFor(grade);
+        if(!assignment)return 'Sin cuatrimestre asignado';
+        return `${assignment.term==='first'?'Primer':'Segundo'} cuatrimestre · ${assignment.year}`;
+      }
+      function availableAcademicYears() {
+        const currentYear=new Date().getFullYear();
+        const years=new Set();
+        for(let year=currentYear-20;year<=currentYear+2;year++)years.add(String(year));
+        state.grades.forEach(grade=> {
+          const dateYear=String(grade.grade_date||'').slice(0,4);
+          if(/^\d{4}$/.test(dateYear))years.add(dateYear);
+        });
+        Object.values(state.gradePeriods||{}).forEach(assignment=> {
+          const year=String(assignment?.year||'');
+          if(/^\d{4}$/.test(year))years.add(year);
+        });
+        Object.values(state.gradeClosures||{}).forEach(closure=> {
+          const year=String(closure?.year||'');
+          if(/^\d{4}$/.test(year))years.add(year);
+        });
+        return [...years].sort((a,b)=>Number(b)-Number(a));
+      }
+      function academicYearOptions(selectedYear='',includePlaceholder=false) {
+        const placeholder=includePlaceholder?'<option value="">Elegí el año lectivo…</option>':'';
+        return placeholder+availableAcademicYears().map(year=>`<option value="${year}" ${String(year)===String(selectedYear)?'selected':''}>${year}</option>`).join('');
+      }
+      function defaultDisplayName() {
+        const email = state.user?.email || '';
+        return email.includes('@') ? email.split('@')[0] : 'Estudiante';
+      }
+      function loadProfileSettings() {
+        const fallback = {displayName:defaultDisplayName(),avatarDataUrl:''};
+        try {
+          const key = profileKey();
+          const stored = key ? localStorage.getItem(key) : null;
+          const parsed = stored ? JSON.parse(stored) : null;
+          state.profile = {
+            displayName:typeof parsed?.displayName === 'string' && parsed.displayName.trim()
+              ? parsed.displayName.trim().slice(0,40)
+              : fallback.displayName,
+            avatarDataUrl:typeof parsed?.avatarDataUrl === 'string' && parsed.avatarDataUrl.startsWith('data:image/')
+              ? parsed.avatarDataUrl
+              : ''
+          };
+        } catch (error) {
+          console.warn('No se pudieron cargar las preferencias de perfil desde este navegador.',error);
+          state.profile = fallback;
+        }
+        state.profilePhotoDraft=state.profile.avatarDataUrl;
+      }
+      function renderAvatar(element, dataUrl, fallbackName) {
+        if (!element) return;
+        const initial = String(fallbackName || 'S').trim().charAt(0).toLocaleUpperCase('es-AR') || 'S';
+        if (dataUrl && dataUrl.startsWith('data:image/')) {
+          element.innerHTML = `<img src="${escapeHTML(dataUrl)}" alt="Foto de perfil" />`;
+          element.classList.add('has-photo');
+        } else {
+          element.textContent = initial;
+          element.classList.remove('has-photo');
+        }
+      }
+      function renderProfileIdentity() {
+        const displayName = state.profile?.displayName || defaultDisplayName();
+        const email = state.user?.email || 'Tu espacio de estudio';
+        $('#welcomeTitle').textContent = `¡Hola, ${displayName}! 👋`;
+        $('#userDisplayName').textContent = displayName;
+        $('#userEmailText').textContent = email;
+        renderAvatar($('#userAvatar'),state.profile?.avatarDataUrl,displayName);
+        if ($('#profilePreviewGreeting')) $('#profilePreviewGreeting').textContent = `¡Hola, ${displayName}! 👋`;
+        renderAvatar($('#profilePhotoPreview'),state.profilePhotoDraft ?? state.profile?.avatarDataUrl,displayName);
+      }
+      function renderProfileForm() {
+        if (!state.user) return;
+        $('#profileName').value=state.profile?.displayName || defaultDisplayName();
+        state.profilePhotoDraft=state.profile?.avatarDataUrl || '';
+        $('#profilePhoto').value='';
+        renderProfileIdentity();
+      }
+      function previewProfileName() {
+        const name=$('#profileName').value.trim() || defaultDisplayName();
+        $('#profilePreviewGreeting').textContent=`¡Hola, ${name}! 👋`;
+      }
+      function imageFileToDataURL(file) {
+        return new Promise((resolve,reject)=> {
+          const reader=new FileReader();
+          reader.onerror=()=>reject(new Error('No se pudo leer la imagen.'));
+          reader.onload=()=> {
+            const img=new Image();
+            img.onerror=()=>reject(new Error('El archivo no parece ser una imagen válida.'));
+            img.onload=()=> {
+              try {
+                const side=Math.min(img.naturalWidth,img.naturalHeight);
+                const sx=(img.naturalWidth-side)/2;
+                const sy=(img.naturalHeight-side)/2;
+                const canvas=document.createElement('canvas');
+                canvas.width=320;
+                canvas.height=320;
+                const ctx=canvas.getContext('2d');
+                if (!ctx) throw new Error('Este navegador no permite procesar la imagen.');
+                ctx.drawImage(img,sx,sy,side,side,0,0,320,320);
+                resolve(canvas.toDataURL('image/jpeg',0.78));
+              } catch (error) {
+                reject(error);
+              }
+            };
+            img.src=String(reader.result);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+      async function saveProfile(event) {
+        event.preventDefault();
+        const displayName=$('#profileName').value.trim();
+        if (!displayName) {
+          toast('Escribí el nombre por el que querés que te llamemos.','error');
+          $('#profileName').focus();
+          return;
+        }
+        if (!state.user) return;
+        const key=profileKey();
+        const nextProfile={displayName:displayName.slice(0,40),avatarDataUrl:state.profilePhotoDraft||''};
+        try {
+          localStorage.setItem(key,JSON.stringify(nextProfile));
+          state.profile=nextProfile;
+          renderProfileIdentity();
+          toast('Personalización guardada en este navegador.','success');
+        } catch (error) {
+          console.error(error);
+          toast('No se pudo guardar. Probá con otra imagen más liviana.','error');
+        }
+      }
+      async function loadAllData() {
+        if (!state.user) return;
+        const uid = state.user.id;
+        const queries = await Promise.all([
+        supabase.from(tableNames.subjects).select('*').eq('user_id',
+        uid).order('created_at',
+        {
+          ascending:true
+        }),
+        supabase.from(tableNames.areas).select('*').eq('user_id',
+        uid).order('created_at',
+        {
+          ascending:true
+        }),
+        supabase.from(tableNames.notes).select('*').eq('user_id',
+        uid).order('updated_at',
+        {
+          ascending:false
+        }),
+        supabase.from(tableNames.grades).select('*').eq('user_id',
+        uid).order('grade_date',
+        {
+          ascending:false
+        }),
+        supabase.from(tableNames.tasks).select('*').eq('user_id',
+        uid).order('due_date',
+        {
+          ascending:true
+        })
+        ]);
+        for (const result of queries) if (result.error) throw result.error;
+        [state.subjects,
+        state.areas,
+        state.notes,
+        state.grades,
+        state.tasks] = queries.map(r => r.data || []);
+        const gradeIds=new Set(state.grades.map(grade=>grade.id));
+        let assignmentsChanged=false;
+        Object.keys(state.gradePeriods||{}).forEach(id=> {
+          if(!gradeIds.has(id)) {
+            delete state.gradePeriods[id];
+            assignmentsChanged=true;
+          }
+        });
+        if(assignmentsChanged) {
+          try { saveGradePeriodAssignments(); }
+          catch(error) { console.warn('No se pudieron limpiar las asignaciones de notas eliminadas.',error); }
+        }
+        if (state.selectedSubject) state.selectedSubject = subjectById(state.selectedSubject.id) || null;
+        if (state.selectedAreaId && !areaById(state.selectedAreaId)) state.selectedAreaId = null;
+        if (state.selectedGradeSubjectId && !subjectById(state.selectedGradeSubjectId)) state.selectedGradeSubjectId = null;
+        renderAll();
+        }
+      function renderAll() {
+         renderStats();
+         renderSubjectGrids();
+         renderSubjectDetail();
+         populateAreaFilters();
+         populateGradeClosureForm();
+         renderNotes();
+         renderGrades();
+         renderTasks();
+         renderAgenda();
+         }
+      function renderStats() {
+         $('#statSubjects').textContent=state.subjects.length;
+         $('#statNotes').textContent=state.notes.length;
+         $('#statTasks').textContent=state.tasks.filter(t=>!t.completed).length;
+         // En el panel principal no se mezclan materias para fabricar un promedio general.
+         // La cifra representa cuántas materias ya tienen al menos una calificación.
+         $('#statAverage').textContent=gradeSubjectGroups(state.grades).filter(group=>group.grades.length>0).length;
+         }
+      function subjectCard(subject) {
+         const areas=visibleAreasForSubject(subject.id);
+         const count=areas.length;
+         const areaSummary=count ? `${count} ${count===1?'área':'áreas'} · ${areas.slice(0,2).map(a=>escapeHTML(a.name)).join(', ')}${count>2?'…':''}` : 'Sin áreas asignadas';
+         const noteCount=state.notes.filter(note=>getSubjectForArea(note.area_id)?.id===subject.id).length;
+         return `<article class="subject-card"><div class="subject-top"><div class="subject-symbol">${escapeHTML(subjectIcon(subject.id))}</div><span class="pill ${subject.is_divided?'primary':''}">${subject.is_divided?'Por áreas':'Materia'}</span></div><div><h3>${escapeHTML(subject.name)}</h3><p>${areaSummary}</p></div><div class="subject-foot"><span class="small muted">${noteCount} apuntes</span><div class="subject-card-buttons"><button class="btn btn-secondary btn-small subject-config-button" data-action="customize-subject" data-subject-id="${subject.id}" aria-label="Configurar emoji de ${escapeHTML(subject.name)}">⚙️</button><button class="btn btn-secondary btn-small" data-open-subject="${subject.id}">Abrir →</button></div></div></article>`;
+         }
+      function renderSubjectGrids() {
+         const q=($('#subjectSearch')?.value||'').trim().toLowerCase();
+         const subjects=state.subjects.filter(s=>s.name.toLowerCase().includes(q));
+         $('#subjectsGrid').innerHTML=subjects.length?subjects.map(subjectCard).join(''):emptyState('📚',
+        q?'No encontramos esa materia':'Todavía no hay materias',
+        q?'Probá con otro nombre.':'Creá tu primera materia para empezar.',
+        '＋ Nueva materia',
+        'new-subject');
+         $('#homeSubjects').innerHTML=state.subjects.length?state.subjects.slice(0,
+        6).map(subjectCard).join(''):emptyState('📚',
+        'Empezá por una materia',
+        'Las materias te ayudan a ordenar apuntes, notas y tareas.',
+        'Crear materia',
+        'new-subject');
+         }
+      function renderSubjectDetail() {
+         const s=state.selectedSubject;
+         if (!s) {
+           $('#subjectDetailView').classList.remove('active');
+           $('#subjectsListView').classList.remove('hidden');
+           return;
+           }
+         $('#subjectsListView').classList.add('hidden');
+         $('#subjectDetailView').classList.add('active');
+         $('#detailSubjectName').textContent=s.name;
+         $('#detailSubjectIcon').textContent=subjectIcon(s.id);
+         const customizeButton=$('[data-action="customize-subject"][data-subject-id=""]');
+         if(customizeButton)customizeButton.dataset.subjectId=s.id;
+         const areas=visibleAreasForSubject(s.id);
+         $('#detailSubjectDescription').textContent=s.is_divided?'Materia organizada en áreas. Entrá a cada una para gestionar sus recursos.':'Administrá recursos de la materia y agregá áreas si las necesitás.';
+         $('#areaCount').textContent=`${areas.length} ${areas.length===1?'área':'áreas'}`;
+         $('#areasGrid').innerHTML=areas.length?areas.map(a=>`<article class="area-card"><div class="subject-top"><div><h3>${escapeHTML(a.name)}</h3><p>${escapeHTML(a.teacher||'Sin profesor asignado')}</p></div><span class="subject-symbol">📂</span></div><div class="area-actions"><button class="btn btn-primary btn-small" data-area-feature="notes" data-area-id="${a.id}">📝 Apuntes</button><button class="btn btn-secondary btn-small" data-area-feature="grades" data-area-id="${a.id}">📊 Notas</button><button class="btn btn-secondary btn-small" data-area-feature="tasks" data-area-id="${a.id}">✓ Tareas</button><button class="btn btn-ghost btn-small" data-edit-area="${a.id}">Editar</button><button class="btn btn-ghost btn-small" data-delete-area="${a.id}">Eliminar</button></div></article>`).join(''):emptyState('🗂️',
+        'Esta materia todavía no tiene áreas',
+        'Podés agregar un área y asignarle un profesor.',
+        '＋ Agregar área',
+        'new-area');
+         }
+      function showPage(page) {
+         if (!['home',
+        'subjects',
+        'notes',
+        'grades',
+        'tasks',
+        'agenda',
+        'profile',
+        'credits'].includes(page)) page='home';
+         state.page=page;
+         $$('.page').forEach(p=>p.classList.toggle('active',
+        p.id===`page-${page}`));
+         $$('.nav-item[data-page]').forEach(b=>b.classList.toggle('active',
+        b.dataset.page===page));
+         closeMobileMenu();
+         if (page==='subjects' && !state.selectedSubject) {
+           $('#subjectDetailView').classList.remove('active');
+           $('#subjectsListView').classList.remove('hidden');
+           }
+         if (page==='agenda') renderAgenda();
+         if (page==='profile') renderProfileForm();
+         if (page==='grades') renderGrades();
+         }
+      function openSubject(id) {
+         state.selectedSubject=subjectById(id)||null;
+         showPage('subjects');
+         renderSubjectDetail();
+         window.scrollTo({
+          top:0,
+          behavior:'smooth'
+        });
+         }
+      function openFeature(page,
+       areaId=null) {
+         state.selectedAreaId=areaId;
+         if(page==='grades') {
+           const selectedArea=areaId?areaById(areaId):null;
+           const owner=selectedArea?subjectById(selectedArea.subject_id):state.selectedSubject;
+           state.selectedGradeSubjectId=owner?.id||null;
+         }
+         showPage(page);
+         if(page==='notes') renderNotes();
+         if(page==='grades') renderGrades();
+         if(page==='tasks') renderTasks();
+         if(page==='agenda') renderAgenda();
+         }
+      function populateAreaFilters() {
+         const ids=['noteAreaFilter',
+        'gradeAreaFilter',
+        'taskAreaFilter',
+        'agendaAreaFilter'];
+         const current=Object.fromEntries(ids.map(id=>[id,
+        $('#'+id)?.value||'all']));
+         ids.forEach(id=> {
+          const select=$('#'+id);
+           if(!select)return;
+           const areas=scopedAreas();
+           select.innerHTML='<option value="all">Todas las áreas</option>'+areas.map(a=>`<option value="${a.id}">${escapeHTML(areaLabel(a.id))}</option>`).join('');
+           if(areas.some(a=>a.id===current[id])) select.value=current[id];
+           else if(state.selectedAreaId && areas.some(a=>a.id===state.selectedAreaId)) select.value=state.selectedAreaId;
+           });
+         }
+      function activeAreaFilter(id) {
+         const value=$('#'+id)?.value||'all';
+         return value==='all'?null:value;
+         }
+      function filteredByArea(items,
+       filterId) {
+         const filter=activeAreaFilter(filterId);
+         return items.filter(item=>!filter||item.area_id===filter).filter(item=>!state.selectedSubject||state.page==='subjects'||state.areas.some(a=>a.id===item.area_id&&a.subject_id===state.selectedSubject.id));
+         }
+      function renderNotes() {
+        const q=($('#noteSearch')?.value||'').toLowerCase().trim();
+        let notes=filteredByArea(state.notes,'noteAreaFilter').filter(note=>
+          (note.title||'').toLowerCase().includes(q)||(note.content||'').toLowerCase().includes(q)
+        );
+        if(state.selectedAreaId)notes=notes.filter(note=>note.area_id===state.selectedAreaId);
+        notes.sort((a,b)=>(b.updated_at||b.created_at||'').localeCompare(a.updated_at||a.created_at||''));
+        $('#notesList').innerHTML=notes.length ? notes.map(note=>
+          `<article class="feature-entry note-bloc-card">
+            <div class="entry-main">
+              <h3>${escapeHTML(note.title||'Apunte sin título')}</h3>
+              <p class="note-bloc-preview">${escapeHTML(note.content||'')}</p>
+              <div class="feature-meta">
+                <span class="pill primary">${escapeHTML(areaLabel(note.area_id))}</span>
+                <span class="pill">Actualizado: ${formatDate((note.updated_at||note.created_at||'').slice(0,10))}</span>
+              </div>
+            </div>
+            <div class="entry-actions">
+              <button class="btn btn-primary btn-small" data-open-note="${note.id}">📝 Abrir bloc</button>
+              <button class="btn btn-danger btn-small" data-delete-note="${note.id}">Eliminar</button>
+            </div>
+          </article>`
+        ).join('') : emptyState('📝','No hay apuntes para mostrar','Creá un bloc nuevo para tomar notas, escribir resúmenes o guardar ideas.','＋ Nuevo bloc','new-note');
+      }
+      function averageOf(grades) {
+        const scores=(grades||[]).map(g=>Number(g.score)).filter(score=>Number.isFinite(score));
+        if (!scores.length) return null;
+        return scores.reduce((sum,score)=>sum+score,0)/scores.length;
+      }
+      function formatAverage(value) {
+        return value===null || !Number.isFinite(value)
+          ? '—'
+          : value.toLocaleString('es-AR',{minimumFractionDigits:0,maximumFractionDigits:2});
+      }
+      function populateGradeYearOptions() {
+        const select=$('#gradeYearFilter');
+        if(!select)return;
+        const currentYear=String(new Date().getFullYear());
+        const previous=select.value || currentYear;
+        const years=availableAcademicYears();
+        select.innerHTML=years.map(year=>`<option value="${year}">${year}</option>`).join('');
+        select.value=years.includes(previous)?previous:currentYear;
+      }
+      function gradeSubjectGroups(grades) {
+        const groups = new Map();
+        (grades || []).forEach(grade => {
+          const subject = getSubjectForArea(grade.area_id);
+          const key = subject?.id || `__unknown__${grade.area_id || 'none'}`;
+          if (!groups.has(key)) {
+            groups.set(key, {
+              id: subject?.id || null,
+              name: subject?.name || 'Materia sin identificar',
+              grades: []
+            });
+          }
+          groups.get(key).grades.push(grade);
+        });
+        return [...groups.values()].sort((a, b) => a.name.localeCompare(b.name, 'es'));
+      }
+      function subjectLabelForGrade(grade) {
+        return getSubjectForArea(grade.area_id)?.name || 'Materia sin identificar';
+      }
+      function subjectAndAreaLabelForGrade(grade) {
+        const subject = getSubjectForArea(grade.area_id);
+        const area = areaById(grade.area_id);
+        if (!subject) return area?.name && !isNoAreaFallbackArea(area) ? `Materia sin identificar · ${area.name}` : 'Materia sin identificar';
+        return area && !isNoAreaFallbackArea(area) ? `${subject.name} · ${area.name}` : subject.name;
+      }
+      function refreshGradeClosureAreas(preferredArea='') {
+        const subjectId=$('#gradeClosureSubject')?.value||'';
+        const areaField=$('#gradeClosureAreaField');
+        const areaSelect=$('#gradeClosureArea');
+        if(!areaField||!areaSelect)return;
+        const areas=visibleAreasForSubject(subjectId);
+        if(!subjectById(subjectId)||!areas.length) {
+          areaField.classList.add('hidden');
+          areaSelect.required=false;
+          areaSelect.innerHTML='<option value="">Esta materia no tiene áreas</option>';
+          areaSelect.value='';
+          return;
+        }
+        const current=preferredArea||areaSelect.value;
+        areaField.classList.remove('hidden');
+        areaSelect.required=true;
+        areaSelect.innerHTML='<option value="">Elegí un área…</option>'+areas.map(area=>
+          `<option value="${area.id}">${escapeHTML(area.name)}${area.teacher?' · '+escapeHTML(area.teacher):''}</option>`
+        ).join('');
+        areaSelect.value=areas.some(area=>area.id===current)?current:'';
+      }
+      function populateGradeClosureForm() {
+        const subjectSelect=$('#gradeClosureSubject');
+        const yearSelect=$('#gradeClosureYear');
+        const termSelect=$('#gradeClosureTerm');
+        if(!subjectSelect||!yearSelect||!termSelect)return;
+        const oldSubject=subjectSelect.value;
+        const oldYear=yearSelect.value;
+        const oldTerm=termSelect.value;
+        const oldArea=$('#gradeClosureArea')?.value||'';
+        subjectSelect.innerHTML='<option value="">Elegí una materia…</option>'+state.subjects.map(subject=>
+          `<option value="${subject.id}">${escapeHTML(subject.name)}</option>`
+        ).join('');
+        subjectSelect.value=state.subjects.some(subject=>subject.id===oldSubject)?oldSubject:'';
+        const years=availableAcademicYears();
+        yearSelect.innerHTML='<option value="">Elegí el año…</option>'+years.map(year=>`<option value="${year}">${year}</option>`).join('');
+        const suggestedYear=oldYear||$('#gradeYearFilter')?.value||String(new Date().getFullYear());
+        yearSelect.value=years.includes(suggestedYear)?suggestedYear:'';
+        termSelect.value=['first','second'].includes(oldTerm)?oldTerm:'';
+        refreshGradeClosureAreas(oldArea);
+        loadSelectedClosureIntoForm();
+      }
+      function loadSelectedClosureIntoForm() {
+        const subjectId=$('#gradeClosureSubject')?.value||'';
+        const year=$('#gradeClosureYear')?.value||'';
+        const term=$('#gradeClosureTerm')?.value||'';
+        refreshGradeClosureAreas($('#gradeClosureArea')?.value||'');
+        const subjectAreas=visibleAreasForSubject(subjectId);
+        const areaId=subjectAreas.length?($('#gradeClosureArea')?.value||''):'';
+        const closure=subjectId&&/^[0-9]{4}$/.test(year)&&['first','second'].includes(term)&&(!subjectAreas.length||areaId)
+          ? gradeClosureFor(subjectId,year,term,areaId)
+          : null;
+        $('#gradeClosureScore').value=closure ? String(closure.score) : '';
+        $('#gradeClosureNote').value=closure?.note||'';
+        $('#gradeClosureClear').classList.toggle('hidden',!closure);
+        $('#gradeClosureSave').textContent=closure?'Actualizar cierre del profesor':'Guardar cierre del profesor';
+      }
+      function renderGradeClosuresList() {
+        const records=Object.entries(state.gradeClosures||{}).map(([key,closure])=>({key,...closure}));
+        records.sort((a,b)=>Number(b.year)-Number(a.year)||(a.term===b.term?0:a.term==='second'?-1:1)||
+          (subjectById(a.subjectId)?.name||'').localeCompare(subjectById(b.subjectId)?.name||'','es')||
+          (areaById(a.areaId)?.name||'').localeCompare(areaById(b.areaId)?.name||'','es'));
+        $('#gradeClosuresList').innerHTML=records.length?records.map(closure=> {
+          const subject=subjectById(closure.subjectId);
+          const area=closure.areaId?areaById(closure.areaId):null;
+          const termLabel=closure.term==='first'?'Primer cuatrimestre':'Segundo cuatrimestre';
+          const areaLabelText=area&&!isNoAreaFallbackArea(area)?`<span>Área: ${escapeHTML(area.name)}</span>`:'';
+          return `<article class="grade-closure-entry"><div class="grade-closure-entry-main"><strong>${escapeHTML(subject?.name||'Materia eliminada')}</strong><span>${termLabel} · ${escapeHTML(closure.year)}</span>${areaLabelText}${closure.note?`<span>${escapeHTML(closure.note)}</span>`:''}</div><div class="grade-closure-entry-score">${escapeHTML(closure.score)} / 10</div><div class="grade-closure-entry-actions"><button class="btn btn-secondary btn-small" data-edit-closure="${escapeHTML(closure.key)}">Editar</button><button class="btn btn-danger btn-small" data-delete-closure="${escapeHTML(closure.key)}">Eliminar</button></div></article>`;
+        }).join(''):'<p class="small muted">Todavía no guardaste cierres de profesor. Podés registrar uno incluso si el promedio calculado no coincide con la nota final.</p>';
+      }
+      function renderTermReport() {
+        populateGradeYearOptions();
+        const selectedYear=$('#gradeYearFilter')?.value||String(new Date().getFullYear());
+        $('#termReportTitle').textContent=`Planilla por cuatrimestre · ${selectedYear}`;
+        const yearGrades=state.grades.filter(grade=>gradePeriodFor(grade)?.year===selectedYear);
+        const yearClosures=Object.values(state.gradeClosures||{}).filter(closure=>String(closure.year)===selectedYear);
+        const periods=[
+          {id:'first',title:'Primer cuatrimestre',range:'Asignado manualmente',grades:yearGrades.filter(grade=>gradePeriodFor(grade)?.term==='first')},
+          {id:'second',title:'Segundo cuatrimestre',range:'Asignado manualmente',grades:yearGrades.filter(grade=>gradePeriodFor(grade)?.term==='second')}
+        ];
+        const reportHtml=periods.map(period=> {
+          const sorted=[...period.grades].sort((a,b)=>(a.grade_date||'').localeCompare(b.grade_date||''));
+          const passed=sorted.filter(grade=>Number(grade.score)>=7).length;
+          const periodClosures=yearClosures.filter(closure=>closure.term===period.id);
+          const groupMap=new Map(gradeSubjectGroups(sorted).map(group=>[group.id||`name:${group.name}`,group]));
+          periodClosures.forEach(closure=> {
+            const id=closure.subjectId;
+            if(!groupMap.has(id))groupMap.set(id,{id,name:subjectById(id)?.name||'Materia eliminada',grades:[]});
+          });
+          const subjectGroups=[...groupMap.values()].sort((a,b)=>a.name.localeCompare(b.name,'es'));
+          const subjectRows=subjectGroups.map(group=> {
+            const average=averageOf(group.grades);
+            const passedForSubject=group.grades.filter(grade=>Number(grade.score)>=7).length;
+            const closures=group.id?periodClosures.filter(closure=>closure.subjectId===group.id):[];
+            const closureValue=closures.length
+              ? closures.map(closure=> {
+                  const area=closure.areaId?areaById(closure.areaId):null;
+                  const areaCaption=area&&!isNoAreaFallbackArea(area)?`<span class="pill primary">${escapeHTML(area.name)}</span>`:'';
+                  return `<div class="grade-detail-closure-row"><div>${areaCaption}<strong>${escapeHTML(closure.score)} / 10</strong><div><span class="pill ${Number(closure.score)>=7?'green':'red'}">${Number(closure.score)>=7?'Cerró aprobado':'Cierre menor a 7'}</span></div></div></div>`;
+                }).join('')
+              : '<span class="closure-not-set">No registrado</span>';
+            return `<tr><td>${escapeHTML(group.name)}</td><td>${group.grades.length}</td><td class="grade-value">${formatAverage(average)}</td><td>${closureValue}</td><td>${passedForSubject} / ${group.grades.length}</td></tr>`;
+          }).join('');
+          const gradeRows=sorted.map(grade=>`<tr><td>${escapeHTML(subjectLabelForGrade(grade))}</td><td>${escapeHTML(displayAreaName(grade.area_id))}</td><td>${escapeHTML(grade.title||'Evaluación')}</td><td class="grade-value">${escapeHTML(grade.score)} / 10</td><td>${formatDate(grade.grade_date)}</td><td><button class="btn btn-secondary btn-small" data-edit-grade="${grade.id}">Editar</button></td></tr>`).join('');
+          const hasData=sorted.length||periodClosures.length;
+          const details=sorted.length
+            ? `<h4 class="term-subheading">Detalle de calificaciones</h4><div class="term-table-wrap"><table class="term-table"><thead><tr><th>Materia</th><th>Área</th><th>Evaluación</th><th>Nota</th><th>Fecha de evaluación</th><th>Acción</th></tr></thead><tbody>${gradeRows}</tbody></table></div>`
+            : `<p class="small muted" style="padding:0 16px 16px">No hay calificaciones individuales registradas en este período. El cierre del profesor se guarda como dato independiente.</p>`;
+          const noGradesMessage='Todavía no hay notas ni cierres asignados a este cuatrimestre. Al cargar una nota o registrar un cierre, elegí manualmente el año y el cuatrimestre.';
+          const content=hasData
+            ? `<h4 class="term-subheading">Promedio por materia y cierre del profesor</h4><div class="term-table-wrap term-area-summary"><table class="term-table"><thead><tr><th>Materia</th><th>Notas</th><th>Promedio calculado</th><th>Cierre del profesor</th><th>Calificaciones aprobadas</th></tr></thead><tbody>${subjectRows}</tbody></table></div>${details}`
+            : `<div class="term-table-wrap">${emptyState('📚','Todavía no hay registros en este cuatrimestre',noGradesMessage,'＋ Nueva calificación','new-grade')}</div>`;
+          return `<article class="term-card"><header class="term-card-header"><h3>${period.title}</h3><p>${period.range} · no depende de la fecha</p></header><div class="term-stats"><div class="term-stat"><span>Materias registradas</span><strong>${subjectGroups.length}</strong></div><div class="term-stat"><span>Calificaciones individuales</span><strong>${sorted.length}</strong></div><div class="term-stat"><span>Aprobadas (7+)</span><strong>${passed}</strong></div></div>${content}</article>`;
+        }).join('');
+        const unassigned=state.grades.filter(grade=>!gradePeriodFor(grade)).sort((a,b)=>(b.grade_date||'').localeCompare(a.grade_date||''));
+        const unassignedHtml=unassigned.length?`<article class="term-card"><header class="term-card-header"><h3>Notas sin cuatrimestre asignado</h3><p>Estas calificaciones todavía no forman parte de ninguna planilla. Editalas para registrarlas en el período correcto, incluso si son de un año anterior.</p></header><div class="term-table-wrap"><table class="term-table"><thead><tr><th>Materia</th><th>Área</th><th>Evaluación</th><th>Nota</th><th>Fecha de evaluación</th><th>Acción</th></tr></thead><tbody>${unassigned.map(grade=>`<tr><td>${escapeHTML(subjectLabelForGrade(grade))}</td><td>${escapeHTML(displayAreaName(grade.area_id))}</td><td>${escapeHTML(grade.title||'Evaluación')}</td><td class="grade-value">${escapeHTML(grade.score)} / 10</td><td>${formatDate(grade.grade_date)}</td><td><button class="btn btn-primary btn-small" data-edit-grade="${grade.id}">Asignar período</button></td></tr>`).join('')}</tbody></table></div></article>`:'';
+        $('#termReport').innerHTML=reportHtml+unassignedHtml;
+      }
+      function renderGradeSubjectPicker() {
+        const picker=$('#gradeSubjectPicker');
+        if(!picker)return;
+        const subjects=[...state.subjects].sort((a,b)=>a.name.localeCompare(b.name,'es'));
+        picker.innerHTML=subjects.length?subjects.map(subject=> {
+          const grades=state.grades.filter(grade=>getSubjectForArea(grade.area_id)?.id===subject.id);
+          const average=averageOf(grades);
+          const passed=grades.filter(grade=>Number(grade.score)>=7).length;
+          return `<article class="subject-card grade-subject-card">
+            <div class="subject-top"><div class="subject-symbol">${escapeHTML(subjectIcon(subject.id))}</div><span class="pill ${subject.is_divided?'primary':''}">${subject.is_divided?'Por áreas':'Materia'}</span></div>
+            <div><h3>${escapeHTML(subject.name)}</h3><p>${grades.length} ${grades.length===1?'evaluación':'evaluaciones'} · Promedio: ${formatAverage(average)}</p></div>
+            <div class="feature-meta"><span class="pill green">${passed} aprobadas (7+)</span></div>
+            <div class="subject-foot"><span class="small muted">Ver notas y evaluaciones</span><button class="btn btn-primary btn-small" data-open-grade-subject="${subject.id}">Entrar →</button></div>
+          </article>`;
+        }).join(''):emptyState('📚','Todavía no hay materias','Primero creá una materia para registrar y consultar sus calificaciones.','＋ Nueva materia','new-subject');
+      }
+      function renderGradeSubjectDetail(subject) {
+        const selectedArea=state.selectedAreaId?areaById(state.selectedAreaId):null;
+        const scopedArea=selectedArea&&selectedArea.subject_id===subject.id?selectedArea:null;
+        const subjectGrades=state.grades.filter(grade=>getSubjectForArea(grade.area_id)?.id===subject.id&&(!scopedArea||grade.area_id===scopedArea.id))
+          .sort((a,b)=>{
+            const aDate=a.grade_date||'9999-12-31';
+            const bDate=b.grade_date||'9999-12-31';
+            return aDate.localeCompare(bDate)||(a.title||'').localeCompare(b.title||'','es');
+          });
+        const average=averageOf(subjectGrades);
+        const passed=subjectGrades.filter(grade=>Number(grade.score)>=7).length;
+        $('#gradeDetailIcon').textContent=subjectIcon(subject.id);
+        $('#gradeDetailName').textContent=subject.name;
+        const areas=visibleAreasForSubject(subject.id);
+        $('#gradeDetailSubtitle').textContent=scopedArea?`Área: ${scopedArea.name} · se muestran únicamente sus evaluaciones.`:areas.length?`${areas.length} ${areas.length===1?'área configurada':'áreas configuradas'} · se muestran todas las evaluaciones de la materia.`:'Materia sin áreas · se muestran todas sus evaluaciones.';
+        $('#gradeDetailAverageLabel').textContent=scopedArea?'Promedio del área':'Promedio de la materia';
+        $('#gradeDetailAverageFoot').textContent=scopedArea?`Solo ${scopedArea.name}`:'Todas las áreas de esta materia';
+        $('#gradeDetailAverage').textContent=formatAverage(average);
+        $('#gradeDetailCount').textContent=subjectGrades.length;
+        $('#gradeDetailPassed').textContent=passed;
+        const closures=Object.values(state.gradeClosures||{}).filter(closure=>closure.subjectId===subject.id&&(!scopedArea||closure.areaId===scopedArea.id))
+          .sort((a,b)=>Number(b.year)-Number(a.year)||(a.term===b.term?0:a.term==='second'?-1:1));
+        $('#gradeDetailClosures').innerHTML=`<h3>🎓 Cierres del profesor</h3>`+(closures.length?closures.map(closure=> {
+          const area=closure.areaId?areaById(closure.areaId):null;
+          const term=closure.term==='first'?'Primer cuatrimestre':'Segundo cuatrimestre';
+          const areaName=area&&!isNoAreaFallbackArea(area)?area.name:'Materia completa';
+          return `<div class="grade-detail-closure-row"><div><strong>${term} · ${escapeHTML(closure.year)}</strong><br/><span>${escapeHTML(areaName)}</span></div><strong class="grade-value">${escapeHTML(closure.score)} / 10 <span class="pill ${Number(closure.score)>=7?'green':'red'}">${Number(closure.score)>=7?'Aprobado':'Menor a 7'}</span></strong></div>`;
+        }).join(''):'<p class="muted">Todavía no hay cierres del profesor registrados para esta materia.</p>');
+        $('#gradeSubjectGradesList').innerHTML=subjectGrades.length?subjectGrades.map(grade=> {
+          const assignment=gradePeriodFor(grade);
+          const area=areaById(grade.area_id);
+          const areaText=area&&!isNoAreaFallbackArea(area)?`<span class="pill primary">Área: ${escapeHTML(area.name)}</span>`:'';
+          return `<article class="feature-entry"><div class="entry-main"><h3>${escapeHTML(grade.title||'Evaluación')}</h3><p>Calificación: <strong>${escapeHTML(grade.score)}</strong> / 10</p><div class="feature-meta">${areaText}<span class="pill">Fecha: ${formatDate(grade.grade_date)}</span><span class="pill ${Number(grade.score)>=7?'green':'red'}">${Number(grade.score)>=7?'Aprobada':'Para revisar'}</span><span class="pill ${assignment?'':'amber'}">${escapeHTML(gradePeriodLabel(grade))}</span></div></div><div class="entry-actions"><button class="btn btn-secondary btn-small" data-edit-grade="${grade.id}">Editar</button><button class="btn btn-danger btn-small" data-delete-grade="${grade.id}">Eliminar</button></div></article>`;
+        }).join(''):emptyState('📊','Todavía no hay calificaciones en esta materia','Las notas que cargues en esta materia van a aparecer acá.','＋ Nueva calificación','new-grade');
+      }
+      function renderGrades() {
+        renderGradeSubjectPicker();
+        const selectedSubject=subjectById(state.selectedGradeSubjectId);
+        const detailMode=Boolean(selectedSubject);
+        $('#gradeSubjectPickerView').classList.toggle('hidden',detailMode);
+        $('#gradeSubjectDetailView').classList.toggle('hidden',!detailMode);
+        $('#gradesOverviewView').classList.toggle('hidden',detailMode);
+        if(detailMode) {
+          renderGradeSubjectDetail(selectedSubject);
+          return;
+        }
+        const q=($('#gradeSearch')?.value||'').toLowerCase().trim();
+        let grades=filteredByArea(state.grades,'gradeAreaFilter').filter(grade=>(grade.title||'').toLowerCase().includes(q));
+        if(state.selectedAreaId)grades=grades.filter(grade=>grade.area_id===state.selectedAreaId);
+        const subjectGroups=gradeSubjectGroups(state.grades);
+        $('#gradeSubjectCount').textContent=subjectGroups.filter(group=>group.grades.length>0).length;
+        $('#subjectGradeAverages').innerHTML=subjectGroups.length
+          ? subjectGroups.map(group=> {
+              const scores=group.grades.map(grade=>Number(grade.score)).filter(Number.isFinite);
+              const sum=scores.reduce((total,score)=>total+score,0);
+              const average=scores.length?sum/scores.length:null;
+              const passed=group.grades.filter(grade=>Number(grade.score)>=7).length;
+              const below=group.grades.length-passed;
+              return `<article class="subject-average-card"><div class="subject-average-top"><h3>${escapeHTML(subjectIcon(group.id)||'📘')} ${escapeHTML(group.name)}</h3></div><p class="subject-average-count">${scores.length} ${scores.length===1?'calificación':'calificaciones'}</p><div class="subject-average-score">${formatAverage(average)} <small>/ 10</small></div><p class="subject-average-formula">Suma: ${formatAverage(sum)} ÷ ${scores.length} = ${formatAverage(average)}</p><div class="feature-meta"><span class="pill green">${passed} aprobadas (7+)</span><span class="pill ${below?'red':''}">${below} por debajo de 7</span><button class="btn btn-secondary btn-small" data-open-grade-subject="${group.id}">Ver materia →</button></div></article>`;
+            }).join('')
+          : `<div class="subject-average-empty">${emptyState('📚','Todavía no hay promedios','Cuando registres calificaciones, vas a ver el promedio individual de cada materia acá.','＋ Nueva calificación','new-grade')}</div>`;
+        $('#gradeCount').textContent=state.grades.length;
+        $('#gradePassed').textContent=state.grades.filter(grade=>Number(grade.score)>=7).length;
+        $('#gradeLow').textContent=state.grades.filter(grade=>Number(grade.score)<7).length;
+        $('#gradesList').innerHTML=grades.length?grades.map(grade=> {
+          const assignment=gradePeriodFor(grade);
+          return `<article class="feature-entry"><div class="entry-main"><h3>${escapeHTML(grade.title)}</h3><p>Calificación: <strong>${escapeHTML(grade.score)}</strong> / 10</p><div class="feature-meta"><span class="pill primary">${escapeHTML(subjectAndAreaLabelForGrade(grade))}</span><span class="pill">Fecha de evaluación: ${formatDate(grade.grade_date)}</span><span class="pill ${Number(grade.score)>=7?'green':'red'}">${Number(grade.score)>=7?'Aprobada':'Para revisar'}</span><span class="pill ${assignment?'':'amber'}">${escapeHTML(gradePeriodLabel(grade))}</span></div></div><div class="entry-actions"><button class="btn btn-secondary btn-small" data-open-grade-subject="${getSubjectForArea(grade.area_id)?.id||''}">Ver materia</button><button class="btn btn-secondary btn-small" data-edit-grade="${grade.id}">${assignment?'Editar':'Asignar cuatrimestre'}</button><button class="btn btn-danger btn-small" data-delete-grade="${grade.id}">Eliminar</button></div></article>`;
+        }).join(''):emptyState('📊','Todavía no hay calificaciones','Agregá una nota para empezar a ver tu seguimiento.','＋ Nueva calificación','new-grade');
+        renderTermReport();
+        renderGradeClosuresList();
+      }
+      function taskCard(t) {
+         return `<article class="feature-entry"><div class="entry-main"><h3>${escapeHTML(t.title)}</h3><p>${escapeHTML(t.description||'Sin descripción')}</p><div class="feature-meta"><span class="pill primary">${escapeHTML(areaLabel(t.area_id))}</span><span class="pill ${t.completed?'green':'amber'}">${t.completed?'Completada':formatDate(t.due_date)}</span></div></div><div class="entry-actions"><button class="btn ${t.completed?'btn-secondary':'btn-success'} btn-small" data-toggle-task="${t.id}">${t.completed?'Reabrir':'✓ Completar'}</button><button class="btn btn-secondary btn-small" data-edit-task="${t.id}">Editar</button><button class="btn btn-danger btn-small" data-delete-task="${t.id}">Eliminar</button></div></article>`;
+         }
+      function renderTasks() {
+         const q=($('#taskSearch')?.value||'').toLowerCase().trim();
+         let tasks=filteredByArea(state.tasks,
+        'taskAreaFilter').filter(t=>(t.title||'').toLowerCase().includes(q)||(t.description||'').toLowerCase().includes(q));
+         if(state.selectedAreaId) tasks=tasks.filter(t=>t.area_id===state.selectedAreaId);
+         if(state.taskFilter==='pending') tasks=tasks.filter(t=>!t.completed);
+         if(state.taskFilter==='completed') tasks=tasks.filter(t=>t.completed);
+         tasks.sort((a,
+        b)=>(a.due_date||'9999').localeCompare(b.due_date||'9999'));
+         $$('.filter-chip[data-task-filter]').forEach(b=>b.classList.toggle('active',
+        b.dataset.taskFilter===state.taskFilter));
+         $('#tasksList').innerHTML=tasks.length?tasks.map(taskCard).join(''):emptyState('✅',
+        'No hay tareas para mostrar',
+        state.taskFilter==='pending'?'¡No tenés tareas pendientes!':'Probá creando una tarea o cambiando los filtros.',
+        state.taskFilter==='pending'?'＋ Nueva tarea':'Crear tarea',
+        'new-task');
+         }
+      function getAgendaEvents() {
+         const range=$('#agendaRange')?.value||'all';
+         const areaFilter=activeAreaFilter('agendaAreaFilter');
+         const now=todayISO();
+         const end=range==='all'?null:(()=> {
+          const d=new Date(`${now}T12:00:00`);
+          d.setDate(d.getDate()+Number(range));
+          return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,
+          '0')}-${String(d.getDate()).padStart(2,
+          '0')}`;
+          })();
+         const events=[];
+         state.tasks.filter(t=>!t.completed).forEach(t=> {
+          if(!t.due_date)return;
+          if(areaFilter&&t.area_id!==areaFilter)return;
+          if(state.selectedAreaId&&t.area_id!==state.selectedAreaId)return;
+          if(end&&(t.due_date<now||t.due_date>end))return;
+          events.push({
+            type:'task',
+            id:t.id,
+            date:t.due_date,
+            title:t.title,
+            detail:t.description||'Tarea pendiente',
+            area_id:t.area_id
+          });
+          });
+         state.grades.forEach(g=> {
+          if(!g.grade_date)return;
+          if(areaFilter&&g.area_id!==areaFilter)return;
+          if(state.selectedAreaId&&g.area_id!==state.selectedAreaId)return;
+          if(end&&(g.grade_date<now||g.grade_date>end))return;
+          events.push({
+            type:'grade',
+            id:g.id,
+            date:g.grade_date,
+            title:g.title,
+            detail:`Evaluación · Nota ${g.score}/10`,
+            area_id:g.area_id
+          });
+          });
+         return events.sort((a,
+        b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title));
+         }
+      function renderAgenda() {
+         const events=getAgendaEvents();
+         if(!events.length) {
+          $('#agendaList').innerHTML=emptyState('🗓️',
+          'Tu agenda está despejada',
+          'No hay tareas pendientes ni evaluaciones para los filtros seleccionados.',
+          '＋ Crear recordatorio',
+          'new-task');
+          renderUpcoming();
+          return;
+          }
+         const groups=new Map();
+         events.forEach(e=> {
+          if(!groups.has(e.date))groups.set(e.date,
+          []);
+          groups.get(e.date).push(e);
+          });
+         $('#agendaList').innerHTML=[...groups.entries()].map(([date,
+        items])=>`<section class="agenda-day"><div class="agenda-date"><span class="date-label">${escapeHTML(formatLongDate(date))}</span><span class="pill">${items.length} ${items.length===1?'evento':'eventos'}</span></div><div class="agenda-items">${items.map(e=>`<div class="agenda-item"><span class="agenda-marker ${e.type}"></span><div class="agenda-content"><strong>${escapeHTML(e.title)}</strong><span>${e.type==='task'?'Tarea pendiente':'Evaluación'} · ${escapeHTML(areaLabel(e.area_id))}</span><span>${escapeHTML(e.detail)}</span></div>${e.type==='task'?`<button class="btn btn-success btn-small" data-toggle-task="${e.id}">Completar</button>`:''}</div>`).join('')}</div></section>`).join('');
+         renderUpcoming();
+         }
+      function renderUpcoming() {
+         const events=[...state.tasks.filter(t=>!t.completed&&t.due_date).map(t=>({
+          ...t,
+          type:'task',
+          date:t.due_date
+        })),
+        ...state.grades.filter(g=>g.grade_date).map(g=>({
+          ...g,
+          type:'grade',
+          date:g.grade_date
+        }))].filter(e=>e.date>=todayISO()).sort((a,
+        b)=>a.date.localeCompare(b.date)).slice(0,
+        4);
+         $('#homeUpcoming').innerHTML=events.length?events.map(e=>`<div class="agenda-item" style="margin-bottom:8px"><span class="agenda-marker ${e.type}"></span><div class="agenda-content"><strong>${escapeHTML(e.title)}</strong><span>${formatDate(e.date)} · ${escapeHTML(areaLabel(e.area_id))}</span></div></div>`).join(''):emptyState('🌤️',
+        'Nada urgente',
+        'Cuando cargues tareas o evaluaciones, van a aparecer acá.');
+         }
+      function openModal(title,
+       bodyHTML,
+       submitLabel,
+       onSubmit,
+       extraActions=[]) {
+         $('#modalTitle').textContent=title;
+         $('#modalBody').innerHTML=bodyHTML;
+         $('#modalActions').innerHTML=`<button class="btn btn-secondary" type="button" id="modalCancel">Cancelar</button><button class="btn btn-primary" type="button" id="modalSubmit">${escapeHTML(submitLabel)}</button>`+extraActions.map(a=>`<button class="btn ${a.className||'btn-secondary'}" type="button" id="${a.id}">${escapeHTML(a.label)}</button>`).join('');
+         $('#modalBackdrop').classList.remove('hidden');
+         state.modalSubmit=onSubmit;
+         $('#modalCancel').addEventListener('click',
+        closeModal);
+         $('#modalSubmit').addEventListener('click',
+        async()=> {
+          const btn=$('#modalSubmit');
+          setBusy(btn,
+          true);
+          try {
+            await state.modalSubmit?.();
+            }
+          catch(e) {
+            console.error(e);
+            toast(e.message||'No se pudo guardar.',
+            'error');
+            }
+          finally {
+            setBusy(btn,
+            false);
+            }
+          });
+         extraActions.forEach(a=> {
+          if(a.onClick)$('#'+a.id).addEventListener('click',
+          a.onClick);
+          });
+         const first=$('input,textarea,select',
+         $('#modalBody'));
+         if(first) setTimeout(()=>first.focus(),
+        20);
+         }
+      function closeModal() {
+         $('#modalBackdrop').classList.add('hidden');
+         $('#modalBody').innerHTML='';
+         $('#modalActions').innerHTML='';
+         state.modalSubmit=null;
+         }
+      function areaSelectHTML(id='formArea', selected='', allowNone=false) {
+        const availableSubjects=state.selectedSubject ? [state.selectedSubject] : state.subjects;
+        const selectedArea=areaById(selected);
+        const selectedValue=selectedArea && isNoAreaFallbackArea(selectedArea)
+          ? `__subject_no_area__:${selectedArea.subject_id}`
+          : selected;
+        const options=availableSubjects.map(subject=> {
+          const areas=visibleAreasForSubject(subject.id);
+          if(!areas.length) {
+            const value=`__subject_no_area__:${subject.id}`;
+            return `<option value="${value}" ${selectedValue===value?'selected':''}>${escapeHTML(subject.name)} · Sin áreas</option>`;
+          }
+          return areas.map(area=>`<option value="${area.id}" ${area.id===selectedValue?'selected':''}>${escapeHTML(subject.name)} · ${escapeHTML(area.name)}</option>`).join('');
+        }).join('');
+        const message=availableSubjects.length
+          ? 'Elegí una materia. Si no tiene áreas configuradas, podés usarla directamente sin crear un área.'
+          : 'Primero creá una materia para registrar este elemento.';
+        return `<div class="field"><label for="${id}">Materia y área (si corresponde)</label><select id="${id}" required><option value="">Elegí una materia o área…</option>${options}</select><span class="small muted">${message}</span></div>`;
+      }
+      function openSubjectModal(subject=null) {
+         const editing=Boolean(subject);
+         openModal(editing?'Editar materia':'Nueva materia',
+        `<form id="subjectForm" class="entry-form"><div class="field"><label for="subjectName">Nombre de la materia</label><input id="subjectName" maxlength="100" required value="${escapeHTML(subject?.name||'')}" placeholder="Ej. Matemática" /></div><div class="field"><label for="subjectDivided">Organización</label><select id="subjectDivided"><option value="false" ${!subject?.is_divided?'selected':''}>Materia simple (sin dividir por áreas)</option><option value="true" ${subject?.is_divided?'selected':''}>Dividir en áreas</option></select></div><div id="initialAreas" class="form-row ${subject?'hidden':''}"><div class="field"><label for="areaOne">Primera área</label><input id="areaOne" placeholder="Ej. Álgebra" /></div><div class="field"><label for="areaTwo">Segunda área (opcional)</label><input id="areaTwo" placeholder="Ej. Geometría" /></div></div><p class="small muted">Podés agregar o editar áreas y profesores después.</p></form>`,
+        editing?'Guardar cambios':'Crear materia',
+        async()=> {
+          const name=$('#subjectName').value.trim();
+          const divided=$('#subjectDivided').value==='true';
+          if(!name)throw new Error('Escribí el nombre de la materia.');
+          const areas=[$('#areaOne')?.value.trim(),
+          $('#areaTwo')?.value.trim()].filter(Boolean);
+          if(!editing&&divided&&!areas.length)throw new Error('Agregá al menos un área para una materia dividida.');
+          if(editing) {
+            const {
+              error
+            }
+            =await supabase.from('subjects').update({
+              name,
+              is_divided:divided
+            }).eq('id',
+            subject.id).eq('user_id',
+            state.user.id);
+            if(error)throw error;
+            toast('Materia actualizada.',
+            'success');
+            }
+          else {
+            const {
+              data,
+              error
+            }
+            =await supabase.from('subjects').insert({
+              name,
+              is_divided:divided,
+              user_id:state.user.id
+            }).select().single();
+            if(error)throw error;
+            if(areas.length) {
+              const rows=areas.map(n=>({
+                subject_id:data.id,
+                user_id:state.user.id,
+                name:n,
+                teacher:''
+              }));
+              const result=await supabase.from('areas').insert(rows);
+              if(result.error) {
+                await loadAllData();
+                throw new Error('La materia se creó, pero no se pudieron guardar sus áreas: '+result.error.message);
+                }
+              }
+            toast('Materia creada.',
+            'success');
+            }
+          closeModal();
+          await loadAllData();
+          if(editing) {
+            state.selectedSubject=subjectById(subject.id);
+            renderSubjectDetail();
+            }
+          });
+         $('#subjectDivided').addEventListener('change',
+        ()=>$('#initialAreas').classList.toggle('hidden',
+        $('#subjectDivided').value!=='true'||editing));
+         }
+      function openAreaModal(area=null) {
+         const editing=Boolean(area);
+         if(!state.selectedSubject&&!editing) {
+          toast('Abrí una materia antes de agregar un área.',
+          'error');
+          return;
+          }
+         openModal(editing?'Editar área':'Agregar área',
+        `<form class="entry-form" id="areaForm"><div class="field"><label for="areaName">Nombre del área</label><input id="areaName" required maxlength="100" value="${escapeHTML(area?.name||'')}" placeholder="Ej. Literatura" /></div><div class="field"><label for="areaTeacher">Profesor/a (opcional)</label><input id="areaTeacher" maxlength="120" value="${escapeHTML(area?.teacher||'')}" placeholder="Nombre del profesor" /></div></form>`,
+        editing?'Guardar cambios':'Agregar área',
+        async()=> {
+          const name=$('#areaName').value.trim();
+          const teacher=$('#areaTeacher').value.trim();
+          if(!name)throw new Error('Escribí el nombre del área.');
+          const payload= {
+            name,
+            teacher
+          };
+          let result;
+          if(editing)result=await supabase.from('areas').update(payload).eq('id',
+          area.id).eq('user_id',
+          state.user.id);
+          else result=await supabase.from('areas').insert({
+            ...payload,
+            subject_id:state.selectedSubject.id,
+            user_id:state.user.id
+          });
+          if(result.error)throw result.error;
+          closeModal();
+          await loadAllData();
+          toast(editing?'Área actualizada.':'Área agregada.',
+          'success');
+          });
+         }
+      function openNoteModal(note=null,
+       presetArea=null) {
+         const editing=Boolean(note);
+         const selected=note?.area_id||presetArea||state.selectedAreaId||'';
+         openModal(editing?'Abrir bloc de notas':'Nuevo bloc de notas',
+        `<form class="entry-form" id="noteForm">${areaSelectHTML('formArea',
+        selected)}<div class="field"><label for="noteTitle">Título</label><input id="noteTitle" maxlength="160" required value="${escapeHTML(note?.title||'')}" placeholder="Ej. Resumen del capítulo 3" /></div><div class="field"><label for="noteContent">Contenido</label><textarea id="noteContent" required placeholder="Escribí tu resumen, explicación o ideas…">${escapeHTML(note?.content||'')}</textarea></div></form>`,
+        editing?'Guardar cambios':'Guardar apunte',
+        async()=> {
+          const areaChoice=$('#formArea').value;
+          const title=$('#noteTitle').value.trim();
+          const content=$('#noteContent').value.trim();
+          if(!areaChoice||!title||!content)throw new Error('Elegí una materia o área y completá el título y el contenido.');
+          const area_id=await resolveAreaSelection(areaChoice);
+          const payload= {
+            area_id,
+            title,
+            content,
+            updated_at:new Date().toISOString(),
+            user_id:state.user.id
+          };
+          const result=editing?await supabase.from('notes').update({
+            area_id,
+            title,
+            content,
+            updated_at:payload.updated_at
+          }).eq('id',
+          note.id).eq('user_id',
+          state.user.id):await supabase.from('notes').insert(payload);
+          if(result.error)throw result.error;
+          closeModal();
+          await loadAllData();
+          showPage('notes');
+          toast(editing?'Apunte actualizado.':'Apunte guardado.',
+          'success');
+          });
+         }
+      function openGradeModal(grade=null, presetArea=null) {
+        const editing=Boolean(grade);
+        const preferredAreaId=grade?.area_id||presetArea||state.selectedAreaId||'';
+        const preferredArea=areaById(preferredAreaId);
+        const initialSubjectId=preferredArea?.subject_id||state.selectedGradeSubjectId||state.selectedSubject?.id||'';
+        const subjectOptions=state.subjects.map(subject=>
+          `<option value="${subject.id}" ${subject.id===initialSubjectId?'selected':''}>${escapeHTML(subject.name)}</option>`
+        ).join('');
+        openModal(editing?'Editar calificación':'Nueva calificación',
+        `<form class="entry-form" id="gradeForm">
+          <div class="field">
+            <label for="gradeSubjectSelect">Materia</label>
+            <select id="gradeSubjectSelect" required>
+              <option value="">Elegí una materia…</option>
+              ${subjectOptions}
+            </select>
+          </div>
+          <div class="field" id="gradeAreaField">
+            <label for="gradeAreaSelect">Área</label>
+            <select id="gradeAreaSelect">
+              <option value="">Elegí un área…</option>
+            </select>
+            <p class="small muted" id="gradeAreaHelp">Si la materia tiene áreas, elegí la que corresponda.</p>
+          </div>
+          <div class="field">
+            <label for="gradeTitle">Evaluación</label>
+            <input id="gradeTitle" maxlength="160" required value="${escapeHTML(grade?.title||'')}" placeholder="Ej. Prueba de funciones" />
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="gradeScore">Nota (0 a 10)</label>
+              <input id="gradeScore" type="number" min="0" max="10" step="0.01" required value="${grade?escapeHTML(grade.score):''}" placeholder="8" />
+            </div>
+            <div class="field">
+              <label for="gradeDate">Fecha de evaluación (opcional)</label>
+              <input id="gradeDate" type="date" value="${escapeHTML(grade?.grade_date||'')}" />
+              <span class="small muted" id="gradeDateStatus">${grade?.grade_date?escapeHTML(formatDate(grade.grade_date)):'Fecha no asignada. Si no elegís una fecha, se conserva este texto.'}</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="gradeAcademicYear">Año lectivo</label>
+              <select id="gradeAcademicYear" required>
+                ${academicYearOptions(gradePeriodFor(grade)?.year||'',true)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="gradeTerm">Cuatrimestre</label>
+              <select id="gradeTerm" required>
+                <option value="">Elegí el cuatrimestre…</option>
+                <option value="first" ${gradePeriodFor(grade)?.term==='first'?'selected':''}>Primer cuatrimestre</option>
+                <option value="second" ${gradePeriodFor(grade)?.term==='second'?'selected':''}>Segundo cuatrimestre</option>
+              </select>
+            </div>
+          </div>
+          <p class="small muted">Elegí el período escolar al que pertenece esta nota. No se determina automáticamente por la fecha de evaluación. Si la materia no tiene áreas, se guarda directamente en la materia.</p>
+        </form>`,
+        editing?'Guardar cambios':'Guardar calificación',
+        async()=> {
+          const subject_id=$('#gradeSubjectSelect').value;
+          let area_id=$('#gradeAreaSelect').value;
+          const title=$('#gradeTitle').value.trim();
+          const rawScore=$('#gradeScore').value.trim();
+          const score=Number(rawScore);
+          const grade_date=$('#gradeDate').value;
+          const academicYear=$('#gradeAcademicYear').value;
+          const academicTerm=$('#gradeTerm').value;
+          if(!subject_id)throw new Error('Elegí una materia.');
+          if(!subjectById(subject_id))throw new Error('La materia seleccionada ya no está disponible.');
+          if(!title||rawScore===''||!Number.isFinite(score)||score<0||score>10)throw new Error('Completá el nombre de la evaluación y una nota válida entre 0 y 10. La fecha es opcional.');
+          if(!/^\d{4}$/.test(academicYear))throw new Error('Elegí el año lectivo al que pertenece la calificación.');
+          if(!['first','second'].includes(academicTerm))throw new Error('Elegí primer o segundo cuatrimestre.');
+
+          const subjectAreas=visibleAreasForSubject(subject_id);
+          if(subjectAreas.length) {
+            if(!area_id)throw new Error('Elegí un área para esta materia.');
+            const selectedArea=areaById(area_id);
+            if(!selectedArea||isNoAreaFallbackArea(selectedArea)||selectedArea.subject_id!==subject_id)throw new Error('El área elegida no pertenece a la materia seleccionada. Elegí la materia y el área otra vez.');
+          } else {
+            area_id=await ensureNoAreaFallback(subject_id);
+          }
+
+          const payload={area_id,title,score,grade_date:grade_date||null,user_id:state.user.id};
+          const result=editing
+            ? await supabase.from('grades').update({area_id,title,score,grade_date:grade_date||null}).eq('id',grade.id).eq('user_id',state.user.id)
+            : await supabase.from('grades').insert(payload).select('id').single();
+          if(result.error)throw result.error;
+          const savedGradeId=editing?grade.id:result.data?.id;
+          if(!savedGradeId)throw new Error('La calificación se guardó, pero no se pudo obtener su identificador para registrar el cuatrimestre. Volvé a editarla para asignarlo.');
+          state.gradePeriods[savedGradeId]={year:academicYear,term:academicTerm};
+          let periodSavedLocally=true;
+          try { saveGradePeriodAssignments(); }
+          catch(storageError) {
+            periodSavedLocally=false;
+            console.error('No se pudo persistir el año/cuatrimestre en este navegador:',storageError);
+          }
+          closeModal();
+          await loadAllData();
+          showPage('grades');
+          toast(periodSavedLocally?(editing?'Calificación actualizada.':'Calificación guardada.'):'La calificación se guardó, pero el navegador no pudo guardar su cuatrimestre. La asignación se conserva solo durante esta sesión; revisá el almacenamiento del navegador.',periodSavedLocally?'success':'error');
+        });
+
+        const dateInput=$('#gradeDate');
+        const dateStatus=$('#gradeDateStatus');
+        dateInput.addEventListener('change',()=> {
+          dateStatus.textContent=dateInput.value?formatDate(dateInput.value):'Fecha no asignada. Si no elegís una fecha, se conserva este texto.';
+        });
+        const subjectSelect=$('#gradeSubjectSelect');
+        const areaSelect=$('#gradeAreaSelect');
+        const areaField=$('#gradeAreaField');
+        const areaHelp=$('#gradeAreaHelp');
+        function refreshGradeAreaOptions(preferred='') {
+          const subjectId=subjectSelect.value;
+          const subject=subjectById(subjectId);
+          const subjectAreas=visibleAreasForSubject(subjectId);
+          if(!subject) {
+            areaField.classList.add('hidden');
+            areaSelect.innerHTML='<option value="">Sin área</option>';
+            areaSelect.required=false;
+            areaSelect.disabled=true;
+            areaHelp.textContent='Elegí una materia para continuar.';
+            return;
+          }
+          if(!subjectAreas.length) {
+            areaField.classList.add('hidden');
+            areaSelect.innerHTML='<option value="">Sin área asignada</option>';
+            areaSelect.value='';
+            areaSelect.required=false;
+            areaSelect.disabled=true;
+            areaHelp.textContent=`${subject.name} no tiene áreas configuradas. La nota se asociará directamente a esta materia.`;
+            return;
+          }
+          areaField.classList.remove('hidden');
+          areaSelect.disabled=false;
+          areaSelect.required=true;
+          areaSelect.innerHTML='<option value="">Elegí un área…</option>'+subjectAreas.map(area=>
+            `<option value="${area.id}">${escapeHTML(area.name)}${area.teacher?' · '+escapeHTML(area.teacher):''}</option>`
+          ).join('');
+          if(subjectAreas.some(area=>area.id===preferred))areaSelect.value=preferred;
+          areaHelp.textContent='Elegí el área de esta materia. El promedio de la materia reunirá todas sus áreas.';
+        }
+        subjectSelect.addEventListener('change',()=>refreshGradeAreaOptions(''));
+        refreshGradeAreaOptions(preferredArea&& !isNoAreaFallbackArea(preferredArea)&&preferredArea.subject_id===subjectSelect.value?preferredArea.id:'');
+      }
+      function openTaskModal(task=null,
+      presetArea=null) {
+         const editing=Boolean(task);
+        const selected=task?.area_id||presetArea||state.selectedAreaId||'';
+        openModal(editing?'Editar tarea':'Nueva tarea o recordatorio',
+        `<form class="entry-form" id="taskForm">${areaSelectHTML('formArea',
+        selected)}<div class="field"><label for="taskTitle">Tarea</label><input id="taskTitle" maxlength="160" required value="${escapeHTML(task?.title||'')}" placeholder="Ej. Entregar trabajo práctico" /></div><div class="field"><label for="taskDescription">Descripción (opcional)</label><textarea id="taskDescription" placeholder="Detalles, materiales o instrucciones…">${escapeHTML(task?.description||'')}</textarea></div><div class="field"><label for="taskDueDate">Fecha de entrega</label><input id="taskDueDate" type="date" value="${escapeHTML(task?.due_date||todayISO())}" /></div></form>`,
+        editing?'Guardar cambios':'Crear tarea',
+        async()=> {
+          const areaChoice=$('#formArea').value;
+          const title=$('#taskTitle').value.trim();
+          const description=$('#taskDescription').value.trim();
+          const due_date=$('#taskDueDate').value||null;
+          if(!areaChoice||!title)throw new Error('Elegí una materia o área y escribí el nombre de la tarea.');
+          const area_id=await resolveAreaSelection(areaChoice);
+          const payload= {
+            area_id,
+            title,
+            description,
+            due_date,
+            user_id:state.user.id,
+            completed:task?.completed||false
+          };
+          const result=editing?await supabase.from('tasks').update({
+            area_id,
+            title,
+            description,
+            due_date
+          }).eq('id',
+          task.id).eq('user_id',
+          state.user.id):await supabase.from('tasks').insert(payload);
+          if(result.error)throw result.error;
+          closeModal();
+          await loadAllData();
+          showPage('tasks');
+          toast(editing?'Tarea actualizada.':'Tarea creada.',
+          'success');
+          });
+         }
+      async function confirmDelete(message,
+       callback) {
+         openModal('Confirmar eliminación',
+        `<p>${escapeHTML(message)}</p><p class="small muted">Esta acción no se puede deshacer.</p>`,
+        'Eliminar',
+        async()=> {
+          await callback();
+          closeModal();
+          await loadAllData();
+          toast('Elemento eliminado.',
+          'success');
+          },
+        [{
+          id:'modalDeleteCancel',
+          label:'Conservar',
+          className:'btn-secondary',
+          onClick:closeModal
+        }]);
+         $('#modalSubmit').classList.remove('btn-primary');
+        $('#modalSubmit').classList.add('btn-danger');
+         }
+      async function deleteArea(id) {
+         const area=areaById(id);
+        if(!area)return;
+        const ok=window.confirm(`¿Eliminar el área “${area.name}” y sus apuntes, calificaciones y tareas?`);
+        if(!ok)return;
+        await runSafely(async()=> {
+          for(const table of ['notes',
+          'grades',
+          'tasks']) {
+            const r=await supabase.from(table).delete().eq('area_id',
+            id).eq('user_id',
+            state.user.id);
+            if(r.error)throw r.error;
+            }
+          const r=await supabase.from('areas').delete().eq('id',
+          id).eq('user_id',
+          state.user.id);
+          if(r.error)throw r.error;
+          await loadAllData();
+          toast('Área y sus recursos eliminados.',
+          'success');
+          });
+         }
+      async function deleteSubject(id) {
+         const subject=subjectById(id);
+        if(!subject)return;
+        const ok=window.confirm(`¿Eliminar la materia “${subject.name}” y todas sus áreas, apuntes, calificaciones y tareas? Esta acción no se puede deshacer.`);
+        if(!ok)return;
+        await runSafely(async()=> {
+          const areaIds=state.areas.filter(a=>a.subject_id===id).map(a=>a.id);
+          for(const table of ['notes',
+          'grades',
+          'tasks']) {
+            let q=supabase.from(table).delete().eq('user_id',
+            state.user.id);
+            if(areaIds.length)q=q.in('area_id',
+            areaIds);
+            else continue;
+            const r=await q;
+            if(r.error)throw r.error;
+            }
+          const a=await supabase.from('areas').delete().eq('subject_id',
+          id).eq('user_id',
+          state.user.id);
+          if(a.error)throw a.error;
+          const s=await supabase.from('subjects').delete().eq('id',
+          id).eq('user_id',
+          state.user.id);
+          if(s.error)throw s.error;
+          state.selectedSubject=null;
+          await loadAllData();
+          showPage('subjects');
+          toast('Materia eliminada.',
+          'success');
+          });
+         }
+      async function toggleTask(id) {
+         const task=state.tasks.find(t=>t.id===id);
+        if(!task)return;
+        await runSafely(async()=> {
+          const {
+            error
+          }
+          =await supabase.from('tasks').update({
+            completed:!task.completed
+          }).eq('id',
+          id).eq('user_id',
+          state.user.id);
+          if(error)throw error;
+          await loadAllData();
+          toast(task.completed?'Tarea reabierta.':'Tarea completada.',
+          'success');
+          });
+         }
+      document.addEventListener('click',
+       async event => {
+        const pageButton=event.target.closest('[data-page]');
+         if(pageButton) {
+          state.selectedSubject=null;
+          state.selectedAreaId=null;
+          state.selectedGradeSubjectId=null;
+          populateAreaFilters();
+          showPage(pageButton.dataset.page);
+          renderSubjectDetail();
+          return;
+          }
+        const action=event.target.closest('[data-action]')?.dataset.action;
+        if(action) {
+          switch(action) {
+            case'new-subject':openSubjectModal();
+            break;
+            case'new-area':openAreaModal();
+            break;
+            case'new-note':openNoteModal();
+            break;
+            case'new-grade':openGradeModal();
+            break;
+            case'new-task':openTaskModal();
+            break;
+            case'subject-notes':openFeature('notes');
+            break;
+            case'subject-grades':openFeature('grades');
+            break;
+            case'subject-tasks':openFeature('tasks');
+            break;
+            case'customize-subject':openSubjectCustomizationModal(subjectById(event.target.closest('[data-action="customize-subject"]')?.dataset.subjectId||''));
+            break;
+            }
+          return;
+          }
+        const subjectOpen=event.target.closest('[data-open-subject]');
+        if(subjectOpen) {
+          openSubject(subjectOpen.dataset.openSubject);
+          return;
+          }
+        const gradeSubjectOpen=event.target.closest('[data-open-grade-subject]');
+        if(gradeSubjectOpen) {
+          const id=gradeSubjectOpen.dataset.openGradeSubject;
+          if(subjectById(id)) {
+            state.selectedGradeSubjectId=id;
+            state.selectedSubject=null;
+            state.selectedAreaId=null;
+            showPage('grades');
+            renderGrades();
+            window.scrollTo({top:0,behavior:'smooth'});
+          }
+          return;
+        }
+        const openNote=event.target.closest('[data-open-note]');
+        if(openNote) {
+          const note=state.notes.find(item=>item.id===openNote.dataset.openNote);
+          if(note)openNoteModal(note);
+          return;
+        }
+        const areaFeature=event.target.closest('[data-area-feature]');
+        if(areaFeature) {
+          openFeature(areaFeature.dataset.areaFeature,
+          areaFeature.dataset.areaId);
+          return;
+          }
+        const editArea=event.target.closest('[data-edit-area]');
+        if(editArea) {
+          openAreaModal(areaById(editArea.dataset.editArea));
+          return;
+          }
+        const deleteAreaBtn=event.target.closest('[data-delete-area]');
+        if(deleteAreaBtn) {
+          await deleteArea(deleteAreaBtn.dataset.deleteArea);
+          return;
+          }
+        const editNote=event.target.closest('[data-edit-note]');
+        if(editNote) {
+          openNoteModal(state.notes.find(n=>n.id===editNote.dataset.editNote));
+          return;
+          }
+        const deleteNote=event.target.closest('[data-delete-note]');
+        if(deleteNote) {
+          const n=state.notes.find(x=>x.id===deleteNote.dataset.deleteNote);
+          if(n)await confirmDelete(`¿Eliminar el apunte “${n.title}”?`,
+          async()=> {
+            const r=await supabase.from('notes').delete().eq('id',
+            n.id).eq('user_id',
+            state.user.id);
+            if(r.error)throw r.error;
+            });
+          return;
+          }
+        const editClosure=event.target.closest('[data-edit-closure]');
+        if(editClosure) {
+          const closure=state.gradeClosures[editClosure.dataset.editClosure];
+          if(closure) {
+            $('#gradeClosureSubject').value=closure.subjectId;
+            $('#gradeClosureYear').value=String(closure.year);
+            $('#gradeClosureTerm').value=closure.term;
+            refreshGradeClosureAreas(closure.areaId||'');
+            loadSelectedClosureIntoForm();
+            if(!closure.areaId&&visibleAreasForSubject(closure.subjectId).length) {
+              toast('Este cierre es de una versión anterior y no tenía área guardada. Registralo otra vez seleccionando el área correspondiente.');
+            }
+            $('#gradeClosureForm').scrollIntoView({behavior:'smooth',block:'center'});
+            $('#gradeClosureScore').focus();
+          }
+          return;
+        }
+        const deleteClosure=event.target.closest('[data-delete-closure]');
+        if(deleteClosure) {
+          const key=deleteClosure.dataset.deleteClosure;
+          const closure=state.gradeClosures[key];
+          if(closure&&window.confirm('¿Eliminar este cierre del profesor?')) {
+            delete state.gradeClosures[key];
+            try {
+              saveGradeClosures();
+              const selectedSubjectId=$('#gradeClosureSubject').value;
+              const selectedAreaId=visibleAreasForSubject(selectedSubjectId).length?($('#gradeClosureArea').value||''):'';
+              if(selectedSubjectId===closure.subjectId&&$('#gradeClosureYear').value===String(closure.year)&&$('#gradeClosureTerm').value===closure.term&&selectedAreaId===(closure.areaId||''))loadSelectedClosureIntoForm();
+              renderGradeClosuresList();
+              renderTermReport();
+              renderGrades();
+              toast('Cierre del profesor eliminado.','success');
+            } catch(error) {
+              console.error(error);
+              toast('No se pudo eliminar el cierre del almacenamiento local.','error');
+            }
+          }
+          return;
+        }
+        const editGrade=event.target.closest('[data-edit-grade]');
+        if(editGrade) {
+          openGradeModal(state.grades.find(g=>g.id===editGrade.dataset.editGrade));
+          return;
+          }
+        const deleteGrade=event.target.closest('[data-delete-grade]');
+        if(deleteGrade) {
+          const g=state.grades.find(x=>x.id===deleteGrade.dataset.deleteGrade);
+          if(g)await confirmDelete(`¿Eliminar la calificación “${g.title}”?`,
+          async()=> {
+            const r=await supabase.from('grades').delete().eq('id',
+            g.id).eq('user_id',
+            state.user.id);
+            if(r.error)throw r.error;
+            });
+          return;
+          }
+        const editTask=event.target.closest('[data-edit-task]');
+        if(editTask) {
+          openTaskModal(state.tasks.find(t=>t.id===editTask.dataset.editTask));
+          return;
+          }
+        const deleteTask=event.target.closest('[data-delete-task]');
+        if(deleteTask) {
+          const t=state.tasks.find(x=>x.id===deleteTask.dataset.deleteTask);
+          if(t)await confirmDelete(`¿Eliminar la tarea “${t.title}”?`,
+          async()=> {
+            const r=await supabase.from('tasks').delete().eq('id',
+            t.id).eq('user_id',
+            state.user.id);
+            if(r.error)throw r.error;
+            });
+          return;
+          }
+        const toggle=event.target.closest('[data-toggle-task]');
+        if(toggle) {
+          await toggleTask(toggle.dataset.toggleTask);
+          return;
+          }
+        const taskFilter=event.target.closest('[data-task-filter]');
+        if(taskFilter) {
+          state.taskFilter=taskFilter.dataset.taskFilter;
+          renderTasks();
+          return;
+          }
+        });
+      $('#copyDiscordCredit').addEventListener('click',async()=> {
+        try {
+          await navigator.clipboard.writeText('santyno_mignone');
+          toast('Usuario de Discord copiado.','success');
+        } catch(error) {
+          toast('Tu navegador no permitió copiarlo. Usuario: santyno_mignone');
+        }
+      });
+      $('#profileForm').addEventListener('submit',saveProfile);
+      $('#profileName').addEventListener('input',previewProfileName);
+      $('#profilePhoto').addEventListener('change',async event=> {
+        const file=event.target.files?.[0];
+        if(!file)return;
+        if(!file.type.startsWith('image/')) {
+          event.target.value='';
+          toast('Elegí un archivo de imagen válido.','error');
+          return;
+        }
+        if(file.size>8*1024*1024) {
+          event.target.value='';
+          toast('La imagen supera los 8 MB. Elegí una más liviana.','error');
+          return;
+        }
+        try {
+          state.profilePhotoDraft=await imageFileToDataURL(file);
+          renderAvatar($('#profilePhotoPreview'),state.profilePhotoDraft,$('#profileName').value||defaultDisplayName());
+          toast('Vista previa actualizada. Acordate de guardar la personalización.','success');
+        } catch(error) {
+          console.error(error);
+          event.target.value='';
+          toast(error.message||'No se pudo procesar la foto.','error');
+        }
+      });
+      $('#removeProfilePhoto').addEventListener('click',()=> {
+        state.profilePhotoDraft='';
+        $('#profilePhoto').value='';
+        renderAvatar($('#profilePhotoPreview'),'',$('#profileName').value||defaultDisplayName());
+        toast('Foto quitada de la vista previa. Guardá para confirmar el cambio.');
+      });
+      $('#authForm').addEventListener('submit',
+      signInOrUp);
+      $('#authSwitch').addEventListener('click',
+      ()=>setAuthMode(state.authMode==='login'?'signup':'login'));
+      $('#logoutBtn').addEventListener('click',
+      async()=> {
+        const {
+          error
+        }
+        =await supabase.auth.signOut();
+        if(error) {
+          toast(error.message,
+          'error');
+          return;
+          }
+        showAuth();
+        setAuthMode('login');
+        });
+      $('#backSubjects').addEventListener('click',
+      ()=> {
+        state.selectedSubject=null;
+        showPage('subjects');
+        renderSubjectDetail();
+        });
+      $('#backGradeSubjects').addEventListener('click',()=> {
+        state.selectedGradeSubjectId=null;
+        state.selectedAreaId=null;
+        renderGrades();
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
+      $('#editSubjectBtn').addEventListener('click',
+      ()=> {
+        if(state.selectedSubject)openSubjectModal(state.selectedSubject);
+        });
+      $('#deleteSubjectBtn').addEventListener('click',
+      ()=> {
+        if(state.selectedSubject)deleteSubject(state.selectedSubject.id);
+        });
+      $('#addAreaBtn').addEventListener('click',
+      ()=>openAreaModal());
+      $('#subjectSearch').addEventListener('input',
+      renderSubjectGrids);
+      $('#noteSearch').addEventListener('input',
+      renderNotes);
+      $('#noteAreaFilter').addEventListener('change',
+      renderNotes);
+      $('#gradeSearch').addEventListener('input',
+      renderGrades);
+      $('#gradeAreaFilter').addEventListener('change',
+      renderGrades);
+      $('#gradeYearFilter').addEventListener('change',renderTermReport);
+      $('#gradeClosureSubject').addEventListener('change',()=> {
+        refreshGradeClosureAreas('');
+        loadSelectedClosureIntoForm();
+      });
+      $('#gradeClosureArea').addEventListener('change',loadSelectedClosureIntoForm);
+      $('#gradeClosureYear').addEventListener('change',loadSelectedClosureIntoForm);
+      $('#gradeClosureTerm').addEventListener('change',loadSelectedClosureIntoForm);
+      $('#gradeClosureForm').addEventListener('submit',event=> {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const form=$('#gradeClosureForm');
+        const saveButton=$('#gradeClosureSave');
+        const subjectId=$('#gradeClosureSubject').value;
+        const year=$('#gradeClosureYear').value;
+        const term=$('#gradeClosureTerm').value;
+        const rawScore=$('#gradeClosureScore').value.trim();
+        const score=Number(rawScore);
+        const note=$('#gradeClosureNote').value.trim();
+
+        // Validación propia para que un campo requerido oculto no bloquee
+        // el formulario sin mostrarle al usuario qué falta completar.
+        if(!state.user) {
+          toast('Tu sesión no está activa. Volvé a iniciar sesión para guardar el cierre.','error');
+          return;
+        }
+        if(!subjectId||!subjectById(subjectId)) {
+          toast('Primero elegí la materia.','error');
+          $('#gradeClosureSubject').focus();
+          return;
+        }
+        if(!/^\d{4}$/.test(year)) {
+          toast('Elegí el año lectivo del cierre.','error');
+          $('#gradeClosureYear').focus();
+          return;
+        }
+        if(!['first','second'].includes(term)) {
+          toast('Elegí si corresponde al primer o al segundo cuatrimestre.','error');
+          $('#gradeClosureTerm').focus();
+          return;
+        }
+        if(rawScore===''||!Number.isFinite(score)||score<0||score>10) {
+          toast('Ingresá una nota de cierre entre 0 y 10.','error');
+          $('#gradeClosureScore').focus();
+          return;
+        }
+
+        const subjectAreas=visibleAreasForSubject(subjectId);
+        let areaId='';
+        if(subjectAreas.length) {
+          areaId=$('#gradeClosureArea').value;
+          if(!areaId||!subjectAreas.some(area=>String(area.id)===String(areaId))) {
+            toast('Esta materia tiene áreas. Elegí el área para la que te cerró la nota.','error');
+            refreshGradeClosureAreas(areaId);
+            $('#gradeClosureAreaField').classList.remove('hidden');
+            $('#gradeClosureArea').required=false; // la validamos manualmente arriba
+            $('#gradeClosureArea').focus();
+            return;
+          }
+        }
+
+        const key=gradeClosureKey(subjectId,year,term,areaId);
+        const previous=state.gradeClosures[key];
+        const closure={
+          subjectId,
+          areaId:areaId||null,
+          year:String(year),
+          term,
+          score,
+          note,
+          updatedAt:new Date().toISOString()
+        };
+        saveButton.disabled=true;
+        const originalButtonText=saveButton.textContent;
+        saveButton.textContent='Guardando…';
+        state.gradeClosures[key]=closure;
+        try {
+          // Primero persistimos; si falla el almacenamiento, no mostramos éxito.
+          saveGradeClosures();
+        } catch(error) {
+          if(previous)state.gradeClosures[key]=previous;
+          else delete state.gradeClosures[key];
+          console.error('Error guardando el cierre del cuatrimestre:',error);
+          toast('No se pudo guardar el cierre en este navegador. Revisá el espacio de almacenamiento y probá de nuevo.','error');
+          saveButton.disabled=false;
+          saveButton.textContent=originalButtonText;
+          return;
+        }
+
+        // El dato ya quedó guardado. Si una vista secundaria falla al redibujarse,
+        // no deshacemos el registro ni ocultamos la confirmación de guardado.
+        try {
+          populateGradeYearOptions();
+          $('#gradeYearFilter').value=String(year);
+        } catch(error) { console.error('No se pudo actualizar el filtro del año:',error); }
+        try { renderGradeClosuresList(); }
+        catch(error) { console.error('No se pudo refrescar la lista de cierres:',error); }
+        try { renderTermReport(); }
+        catch(error) { console.error('No se pudo refrescar la planilla cuatrimestral:',error); }
+        try { renderGrades(); }
+        catch(error) { console.error('No se pudo refrescar el panel de calificaciones:',error); }
+        try { loadSelectedClosureIntoForm(); }
+        catch(error) { console.error('No se pudo refrescar el formulario de cierre:',error); }
+        saveButton.disabled=false;
+        saveButton.textContent=originalButtonText;
+        toast('Cierre del cuatrimestre guardado correctamente. No modifica el promedio de las evaluaciones.','success');
+      });
+      $('#gradeClosureClear').addEventListener('click',()=> {
+        const subjectId=$('#gradeClosureSubject').value;
+        const year=$('#gradeClosureYear').value;
+        const term=$('#gradeClosureTerm').value;
+        const subjectAreas=visibleAreasForSubject(subjectId);
+        const areaId=subjectAreas.length?($('#gradeClosureArea').value||''):'';
+        const key=gradeClosureKey(subjectId,year,term,areaId);
+        if(!state.gradeClosures[key])return;
+        delete state.gradeClosures[key];
+        try {
+          saveGradeClosures();
+          loadSelectedClosureIntoForm();
+          renderGradeClosuresList();
+          renderTermReport();
+          renderGrades();
+          toast('Se quitó el cierre guardado.','success');
+        } catch(error) {
+          console.error(error);
+          toast('No se pudo actualizar el almacenamiento local.','error');
+        }
+      });
+      $('#taskSearch').addEventListener('input',
+      renderTasks);
+      $('#taskAreaFilter').addEventListener('change',
+      renderTasks);
+      $('#agendaRange').addEventListener('change',
+      renderAgenda);
+      $('#agendaAreaFilter').addEventListener('change',
+      renderAgenda);
+      $('#modalClose').addEventListener('click',
+      closeModal);
+      $('#modalBackdrop').addEventListener('click',
+      e=> {
+        if(e.target===$('#modalBackdrop'))closeModal();
+        });
+      document.addEventListener('keydown',
+      e=> {
+        if(e.key==='Escape')closeModal();
+        });
+      $('#menuToggle').addEventListener('click',
+      ()=> {
+        $('#sidebar').classList.add('open');
+        $('#mobileOverlay').classList.add('open');
+        });
+      $('#mobileOverlay').addEventListener('click',
+      closeMobileMenu);
+      function closeMobileMenu() {
+        $('#sidebar').classList.remove('open');
+        $('#mobileOverlay').classList.remove('open');
+        }
+      function applyTheme(theme) {
+        state.theme=theme;
+        document.body.classList.toggle('dark',
+        theme==='dark');
+        $('#themeText').textContent=theme==='dark'?'Tema claro':'Tema oscuro';
+        $('#themeIcon').textContent=theme==='dark'?'☀':'☾';
+        $('#mobileThemeToggle').textContent=theme==='dark'?'☀':'☾';
+        }
+      function toggleTheme() {
+        applyTheme(state.theme==='dark'?'light':'dark');
+        }
+      $('#themeToggle').addEventListener('click',
+      toggleTheme);
+      $('#mobileThemeToggle').addEventListener('click',
+      toggleTheme);
+      // Los cambios de autenticación posteriores al arranque mantienen la sesión sincronizada.
+      let initialSessionHandled=false;
+      supabase.auth.onAuthStateChange((event,
+      session)=> {
+        if(event==='INITIAL_SESSION')return;
+        if(event==='SIGNED_OUT') {
+          showAuth();
+          return;
+          }
+        if(session?.user && state.user?.id!==session.user.id) {
+          state.user=session.user;
+          queueMicrotask(()=>enterApp().catch(e=>toast(e.message,
+          'error')));
+          }
+        });
+      async function init() {
+        applyTheme('light');
+        const {
+          data,
+          error
+        }
+        =await supabase.auth.getSession();
+        if(error) {
+          toast(error.message,
+          'error');
+          showAuth();
+          return;
+          }
+        initialSessionHandled=true;
+        if(data.session?.user) {
+          state.user=data.session.user;
+          try {
+            await enterApp();
+            }
+          catch(e) {
+            console.error(e);
+            toast(e.message||'No se pudieron cargar los datos.',
+            'error');
+            }
+          }
+        else showAuth();
+        }
+      init();
+  </script>
+ </body>
+</html>
