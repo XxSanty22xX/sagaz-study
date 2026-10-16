@@ -1526,6 +1526,25 @@
       .pomodoro-orb { width: min(100%,270px); }
     }
 
+
+    /* Modelos de exámenes: plan adaptativo y evaluación final */
+    .exam-plan-hero{padding:24px;border-radius:18px;background:linear-gradient(135deg,var(--primary-soft),var(--surface));border:1px solid var(--border);margin-bottom:18px}
+    .exam-plan-hero h2{margin:0 0 8px;font-size:1.3rem}.exam-plan-hero p{margin:0;color:var(--muted);max-width:850px;line-height:1.6}
+    .exam-topic-help{font-size:.84rem;color:var(--muted);line-height:1.5;margin-top:6px}
+    .exam-plan-card{border:1px solid var(--border);border-radius:16px;padding:18px;margin-top:14px;background:var(--surface)}
+    .exam-plan-card h3{margin:0 0 6px}.exam-plan-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    .exam-plan-meta,.exam-topic-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .exam-plan-progress{height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:14px 0 8px}.exam-plan-progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--primary),#9c78ff);border-radius:inherit}
+    .exam-session{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--border)}.exam-session:first-child{border-top:0}
+    .exam-session-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--primary-soft);flex:0 0 auto;font-size:1.15rem}
+    .exam-session-content{flex:1;min-width:0}.exam-session-content strong{display:block}.exam-session-content p{margin:5px 0;color:var(--muted);font-size:.9rem;white-space:pre-wrap}
+    .exam-session-done{opacity:.72}.exam-session-done .exam-session-content strong{text-decoration:line-through}
+    .exam-answer-guide{padding:14px;border-radius:12px;background:var(--surface-2);margin-top:10px;white-space:pre-wrap;line-height:1.55}
+    .exam-question{border:1px solid var(--border);border-radius:14px;padding:16px;margin:14px 0}.exam-question h3{font-size:1rem;margin:0 0 12px}.exam-question textarea{width:100%;min-height:105px}
+    .exam-choice{display:flex;align-items:flex-start;gap:10px;padding:11px;border:1px solid var(--border);border-radius:11px;margin:8px 0;cursor:pointer}.exam-choice:has(input:checked){border-color:var(--primary);background:var(--primary-soft)}.exam-choice input{margin-top:4px}
+    .exam-result-score{padding:18px;border-radius:14px;background:var(--green-soft);margin:14px 0}.exam-result-score strong{display:block;font-size:2rem}
+    @media(max-width:700px){.exam-plan-card{padding:14px}.exam-plan-top{display:block}.exam-plan-top .tool-button-row{margin-top:12px}.exam-session{gap:9px}}
+
   </style>
  </head>
  <body>
@@ -1639,6 +1658,10 @@
      <button class="nav-item" data-page="quizzes">
       <span class="nav-icon">🧠</span>
       Cuestionarios
+     </button>
+     <button class="nav-item" data-page="examplans">
+      <span class="nav-icon">📝</span>
+      Modelos de exámenes
      </button>
      <button class="nav-item" data-page="planner">
       <span class="nav-icon">🗓️</span>
@@ -2492,6 +2515,34 @@
      </section>
     </section>
 
+
+    <section class="page" id="page-examplans">
+     <header class="page-header">
+      <div><div class="eyebrow">Preparación guiada</div><h1>Modelos de exámenes</h1><p>Armá un plan realista según tu fecha de examen, estudiá cada bloque y rendí una prueba final cuando completes el recorrido.</p></div>
+     </header>
+     <div class="exam-plan-hero"><h2>📚 De los temas al examen final</h2><p>Escribí cada tema junto con una explicación, respuesta clave o resumen de tus apuntes. Sagaz Study repartirá los temas en sesiones, te mostrará qué estudiar y desbloqueará un modelo de examen completo cuando marques todas las sesiones como terminadas. No usa IA: las guías de respuesta salen del material que ingreses.</p></div>
+     <section class="panel">
+      <div class="section-title"><h2>Crear un plan de estudio</h2><span class="pill">Personalizado</span></div>
+      <form id="examPlanForm" class="tool-form">
+       <div class="field"><label for="examPlanTitle">Nombre del examen</label><input id="examPlanTitle" maxlength="120" placeholder="Ej.: Evaluación de Ciencias Naturales" required></div>
+       <div class="tool-fields-2">
+        <div class="field"><label for="examPlanSubject">Materia (opcional)</label><select id="examPlanSubject"><option value="">Sin materia</option></select></div>
+        <div class="field"><label for="examPlanDate">Fecha del examen</label><input id="examPlanDate" type="date" required></div>
+       </div>
+       <div class="tool-fields-2">
+        <div class="field"><label for="examPlanMinutes">Minutos de estudio por día</label><input id="examPlanMinutes" type="number" min="10" max="360" value="45" required><small class="muted">Elegí una cantidad que puedas cumplir.</small></div>
+        <div class="field"><label for="examPlanLevel">¿Cómo venís con la materia?</label><select id="examPlanLevel"><option value="starting">Estoy empezando</option><option value="some" selected>Conozco algunos temas</option><option value="review">Solo necesito repasar</option></select></div>
+       </div>
+       <div class="field"><label for="examPlanTopics">Temas y respuestas clave</label><textarea id="examPlanTopics" rows="9" maxlength="16000" placeholder="Un tema por línea, con este formato: Tema | explicación, respuesta clave o resumen
+Ej.: Fotosíntesis | Proceso por el que las plantas convierten la luz en energía química; requiere agua, dióxido de carbono y luz.
+Ej.: Respiración celular | Proceso por el que las células obtienen energía a partir de nutrientes." required></textarea><div class="exam-topic-help">Usá una línea por tema y separá el título de la explicación con el símbolo <strong>|</strong>. Incluí los apuntes importantes para que Sagaz pueda mostrarte una guía de respuesta y preparar preguntas a partir de ellos. Cuanto más completo sea el material, mejor será la práctica.</div></div>
+       <div class="tool-button-row"><button class="btn btn-primary" type="submit">✨ Generar mi plan</button></div>
+      </form>
+     </section>
+     <section class="panel study-panel-spaced"><div class="section-title"><h2>Mis planes de examen</h2><span class="muted small" id="examPlanCount">0 planes</span></div><div id="examPlansList"><div class="empty-state compact"><div class="empty-icon">📝</div><h3>Todavía no creaste un plan</h3><p>Completá el formulario para distribuir tus temas y prepararte con tiempo.</p></div></div></section>
+     <section class="panel study-panel-spaced" id="examPlanRunner" hidden><div class="section-title"><h2 id="examRunnerTitle">Modelo de examen</h2><span class="pill" id="examRunnerProgress"></span></div><div id="examRunnerBody"></div><div class="tool-button-row" id="examRunnerActions"></div></section>
+    </section>
+
     <section class="page" id="page-gamification">
      <header class="page-header">
       <div>
@@ -3245,6 +3296,7 @@
         'pomodoro',
         'quizzes',
         'planner',
+        'examplans',
         'gamification',
         'profile',
         'credits'].includes(page)) page='home';
@@ -3265,6 +3317,7 @@
          if (page==='pomodoro') renderPomodoroPage();
          if (page==='quizzes') renderQuizzes();
          if (page==='planner') renderPlanner();
+         if (page==='examplans') renderExamPlans();
          if (page==='gamification') renderGamification();
          }
       function openSubject(id) {
@@ -4625,6 +4678,7 @@
           pomodoro: { focusMinutes: 25, breakMinutes: 5, sessions: 0, focusMinutesCompleted: 0 },
           quizzes: [],
           planner: [],
+          examPlans: [],
           gamification: {
             xp: 0, completedDays: [], totalFlashcardsReviewed: 0,
             rewardedPlannerIds: [], rewardedQuizIds: [], reviewedCardDays: {}
@@ -4642,6 +4696,7 @@
           flashcards: Array.isArray(safe.flashcards) ? safe.flashcards : [],
           quizzes: Array.isArray(safe.quizzes) ? safe.quizzes : [],
           planner: Array.isArray(safe.planner) ? safe.planner : [],
+          examPlans: Array.isArray(safe.examPlans) ? safe.examPlans : [],
           pomodoro: { ...defaults.pomodoro, ...p },
           gamification: { ...defaults.gamification, ...g,
             completedDays: Array.isArray(g.completedDays) ? g.completedDays : [],
@@ -4894,6 +4949,122 @@
         renderGamification();
         toast(`Cuestionario terminado: ${score}%.`, score >= 70 ? 'success' : '');
       }
+      let activeExamPlanId = null;
+      let activeExamResultVisible = false;
+      function examDateLabel(value) {
+        if (!value) return 'Sin fecha';
+        const parts = value.split('-').map(Number);
+        return new Date(parts[0], parts[1]-1, parts[2]).toLocaleDateString('es-AR', {day:'numeric', month:'short', year:'numeric'});
+      }
+      function examDateRange(start, end) {
+        const dates=[];
+        const a=new Date(`${start}T12:00:00`), b=new Date(`${end}T12:00:00`);
+        for(let d=new Date(a); d<=b && dates.length<370; d.setDate(d.getDate()+1)) dates.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
+        return dates;
+      }
+      function renderExamPlans() {
+        if (!state.studyTools) return;
+        populateStudyToolSubjectSelects();
+        const dateInput=document.getElementById('examPlanDate');
+        if(dateInput){const now=new Date();dateInput.min=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;}
+        const select=document.getElementById('examPlanSubject');
+        if(select && select.dataset.filled!=='yes') {
+          select.innerHTML='<option value="">Sin materia</option>'+state.subjects.map(subject=>`<option value="${escapeHTML(subject.id)}">${escapeHTML(subject.name)}</option>`).join('');
+          select.dataset.filled='yes';
+        }
+        const list=document.getElementById('examPlansList');
+        const plans=[...state.studyTools.examPlans].sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+        document.getElementById('examPlanCount').textContent=`${plans.length} ${plans.length===1?'plan':'planes'}`;
+        if(!plans.length){list.innerHTML='<div class="empty-state compact"><div class="empty-icon">📝</div><h3>Todavía no creaste un plan</h3><p>Completá el formulario para distribuir tus temas y prepararte con tiempo.</p></div>';return;}
+        list.innerHTML=plans.map(plan=>{
+          const total=plan.sessions.length, done=plan.sessions.filter(x=>x.completed).length, pct=total?Math.round(done/total*100):0, unlocked=total>0&&done===total;
+          const subject=state.subjects.find(x=>x.id===plan.subjectId)?.name||'Sin materia';
+          const sessions=plan.sessions.map((session,i)=>`<div class="exam-session ${session.completed?'exam-session-done':''}"><div class="exam-session-icon">${session.completed?'✓':'📖'}</div><div class="exam-session-content"><strong>Día ${i+1}: ${escapeHTML(session.title)}</strong><p>${escapeHTML(examDateLabel(session.date))} · ${session.minutes} min · ${session.topicIndexes.map(index=>escapeHTML(plan.topics[index]?.title||'Tema')).join(' · ')}</p>${session.completed?'<span class="tool-chip">Completada</span>':''}</div><button type="button" class="btn btn-small ${session.completed?'btn-secondary':'btn-primary'}" data-tool-action="exam-session-toggle" data-plan-id="${escapeHTML(plan.id)}" data-session-id="${escapeHTML(session.id)}">${session.completed?'Deshacer':'✓ Completar'}</button></div>`).join('');
+          const answerGuides=plan.topics.map(topic=>`<details class="exam-answer-guide"><summary><strong>${escapeHTML(topic.title)}</strong> · Ver guía de respuesta</summary><p>${escapeHTML(topic.notes)}</p></details>`).join('');
+          const result=plan.examAttempt?`<div class="exam-result-score"><strong>${plan.examAttempt.score}%</strong><span>Último modelo de examen · ${plan.examAttempt.correct} de ${plan.examAttempt.total} preguntas objetivas</span><p>${escapeHTML(plan.examAttempt.dateLabel||'Intento guardado')} · ${plan.examAttempt.score>=70?'Buen resultado: seguí repasando para consolidarlo.':'Revisá las guías de respuesta y volvé a intentarlo.'}</p></div>`:'';
+          return `<article class="exam-plan-card"><div class="exam-plan-top"><div><h3>${escapeHTML(plan.title)}</h3><p class="muted small">${escapeHTML(subject)} · Examen: ${escapeHTML(examDateLabel(plan.examDate))}</p><div class="exam-plan-meta"><span class="tool-chip">⏱️ ${plan.dailyMinutes} min/día</span><span class="tool-chip">📚 ${plan.topics.length} temas</span><span class="tool-chip">${done}/${total} sesiones completadas</span></div></div><div class="tool-button-row"><button type="button" class="btn btn-secondary btn-small" data-tool-action="exam-guides-toggle" data-plan-id="${escapeHTML(plan.id)}">Ver temas y respuestas</button><button type="button" class="btn btn-danger btn-small" data-tool-action="exam-plan-delete" data-plan-id="${escapeHTML(plan.id)}">Eliminar plan</button></div></div><div class="exam-plan-progress"><span style="width:${pct}%"></span></div><div class="muted small">${pct}% del plan completado${unlocked?' · 🎉 Modelo de examen desbloqueado':''}</div><div class="exam-sessions">${sessions}</div><div class="tool-button-row">${unlocked?`<button type="button" class="btn btn-primary" data-tool-action="exam-start" data-plan-id="${escapeHTML(plan.id)}">📝 ${plan.examAttempt?'Volver a rendir':'Rendir modelo de examen'}</button>`:'<span class="muted small">Completá todas las sesiones para desbloquear el examen final.</span>'}</div><div id="exam-guides-${escapeHTML(plan.id)}" class="study-panel-spaced" hidden><h4>Guías de estudio por tema</h4>${answerGuides}</div>${result}</article>`;
+        }).join('');
+      }
+      function createExamPlan(title, subjectId, examDate, dailyMinutes, level, rawTopics) {
+        const topics=rawTopics.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map((line,index)=>{
+          const split=line.indexOf('|');
+          if(split<1) throw new Error(`La línea ${index+1} debe tener el formato Tema | explicación o respuesta clave.`);
+          const title=line.slice(0,split).trim(), notes=line.slice(split+1).trim();
+          if(!title||!notes) throw new Error(`Completá tanto el tema como su explicación en la línea ${index+1}.`);
+          return {title,notes};
+        });
+        if(topics.length<2) throw new Error('Ingresá al menos 2 temas, cada uno con su explicación, para armar un plan y un examen completo.');
+        const today=new Date(); today.setHours(12,0,0,0);
+        const todayISO=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+        if(examDate<todayISO) throw new Error('La fecha del examen no puede estar en el pasado.');
+        const dates=examDateRange(todayISO,examDate);
+        const sessions=[];
+        const buckets=dates.map(date=>({date,topicIndexes:[]}));
+        topics.forEach((topic,index)=>{
+          const bucketIndex=Math.min(buckets.length-1,Math.floor(index*buckets.length/topics.length));
+          buckets[bucketIndex].topicIndexes.push(index);
+        });
+        const levelHint=level==='starting'?'Primero comprendé la explicación, después cerrá los apuntes y tratá de recordarla.':level==='review'?'Intentá explicar el tema sin mirar y usá la guía solo para corregir lo que falte.':'Leé la guía, resumila con tus palabras y luego practicá recordarla sin mirar.';
+        buckets.filter(bucket=>bucket.topicIndexes.length).forEach((bucket,index)=>{
+          const topicNames=bucket.topicIndexes.map(i=>topics[i].title);
+          sessions.push({id:toolId(),date:bucket.date,title:topicNames.length===1?topicNames[0]:`${topicNames.length} temas: ${topicNames.slice(0,2).join(', ')}${topicNames.length>2?'…':''}`,topicIndexes:bucket.topicIndexes,minutes:dailyMinutes,completed:false,tip:levelHint});
+        });
+        if(sessions.length>1){
+          const reviewDate=examDate>todayISO?examDateRange(todayISO,examDate).slice(-2)[0]:examDate;
+          sessions.push({id:toolId(),date:reviewDate,title:'Repaso general y preparación',topicIndexes:topics.map((_,i)=>i),minutes:Math.max(10,Math.min(dailyMinutes,Math.round(dailyMinutes*.75))),completed:false,tip:'Repasá los conceptos clave, practicá responder sin mirar y anotá las dudas que todavía tengas.'});
+        }
+        return {id:toolId(),title,subjectId:subjectId||null,examDate,dailyMinutes,level,topics,sessions,createdAt:new Date().toISOString(),examAttempt:null};
+      }
+      function beginModelExam(planId) {
+        const plan=state.studyTools.examPlans.find(item=>item.id===planId);
+        if(!plan||!plan.sessions.length||plan.sessions.some(session=>!session.completed)){toast('Completá todas las sesiones del plan antes de rendir.', '');return;}
+        activeExamPlanId=planId;
+        activeExamResultVisible=false;
+        const runner=document.getElementById('examPlanRunner');
+        runner.hidden=false;
+        document.getElementById('examRunnerTitle').textContent=`Modelo de examen: ${plan.title}`;
+        document.getElementById('examRunnerProgress').textContent=`${plan.topics.length} temas · ${plan.dailyMinutes} min/día`;
+        const hasMCQ=plan.topics.length>1;
+        const questions=plan.topics.map((topic,index)=>{
+          const candidates=[index,...plan.topics.map((_,i)=>i).filter(i=>i!==index)].slice(0,4);
+          const correctPosition=index%candidates.length;
+          const indexes=[...candidates.slice(1,correctPosition+1),candidates[0],...candidates.slice(correctPosition+1)];
+          const options=indexes.map(topicIndex=>({topicIndex,text:plan.topics[topicIndex].notes}));
+          return {index,topic,options,correct:options.findIndex(option=>option.topicIndex===index),hasMCQ};
+        });
+        runner.dataset.questions=JSON.stringify(questions.map(q=>({index:q.index,options:q.options.map(o=>o.topicIndex),correctIndex:q.correct})));
+        document.getElementById('examRunnerBody').innerHTML=`<form id="modelExamForm"><div class="study-tip"><strong>Instrucciones</strong><p>Respondé sin mirar las guías. Cada tema tiene una pregunta de opción múltiple y una consigna para explicar con tus palabras. Al entregar, verás las respuestas clave para corregirte. La selección múltiple se corrige automáticamente; las respuestas escritas requieren autoevaluación.</p></div>${questions.map((q,n)=>`<article class="exam-question"><h3>${n+1}. ¿Qué explicación corresponde a “${escapeHTML(q.topic.title)}”?</h3>${q.options.map((option,j)=>`<label class="exam-choice"><input type="radio" name="mcq-${n}" value="${j}" required><span><strong>${String.fromCharCode(65+j)}.</strong> ${escapeHTML(option.text)}</span></label>`).join('')}<div class="field" style="margin-top:16px"><label for="exam-written-${n}">${n+1}.b Explicá el tema “${escapeHTML(q.topic.title)}” con tus propias palabras.</label><textarea id="exam-written-${n}" name="written-${n}" rows="3" maxlength="3000" placeholder="Escribí tu respuesta sin mirar los apuntes..." required></textarea></div></article>`).join('')}<div class="tool-button-row"><button class="btn btn-primary" type="submit">Entregar examen</button><button class="btn btn-secondary" type="button" data-tool-action="exam-close">Salir sin entregar</button></div></form>`;
+        document.getElementById('examRunnerActions').innerHTML='';
+        showPage('examplans');
+        runner.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+      async function submitModelExam(event) {
+        event.preventDefault();
+        const plan=state.studyTools.examPlans.find(item=>item.id===activeExamPlanId);
+        if(!plan)return;
+        const form=event.currentTarget;
+        const topics=plan.topics;
+        let correct=0;
+        const total=topics.length;
+        const questionData=JSON.parse(document.getElementById('examPlanRunner').dataset.questions||'[]');
+        const responses=topics.map((topic,index)=>{
+          const picked=form.querySelector(`input[name="mcq-${index}"]:checked`);
+          const pickedIndex=picked?Number(picked.value):-1;
+          if(pickedIndex===questionData[index]?.correctIndex)correct++;
+          return {topic:topic.title,selected:pickedIndex,written:form.querySelector(`[name="written-${index}"]`)?.value.trim()||''};
+        });
+        const score=Math.round(correct/Math.max(1,total)*100);
+        plan.examAttempt={score,correct,total,dateLabel:new Date().toLocaleDateString('es-AR'),responses};
+        activeExamResultVisible=true;
+        try{await saveStudyTools('Modelo de examen guardado.');}catch(error){console.error(error);}
+        document.getElementById('examRunnerProgress').textContent=`Resultado · ${correct}/${total}`;
+        document.getElementById('examRunnerBody').innerHTML=`<div class="exam-result-score"><strong>${score}%</strong><span>${correct} de ${total} preguntas de opción múltiple correctas</span><p>${score>=70?'¡Buen trabajo! Ahora revisá las respuestas escritas y las guías para detectar qué reforzar.':'Volvé a las guías de estudio y practicá los temas que te costaron antes de rendir de nuevo.'}</p><small>La nota automática evalúa las preguntas de opción múltiple. Las respuestas escritas se muestran para que puedas compararlas con la guía; no se corrigen automáticamente.</small></div>${topics.map((topic,index)=>`<article class="exam-question"><h3>${index+1}. ${escapeHTML(topic.title)}</h3><p><strong>Tu respuesta:</strong></p><div class="exam-answer-guide">${escapeHTML(responses[index].written)}</div><p><strong>Guía de respuesta:</strong></p><div class="exam-answer-guide">${escapeHTML(topic.notes)}</div><label class="exam-choice"><input type="checkbox" data-exam-self-check="${index}"><span>Mi respuesta escrita incluyó las ideas clave.</span></label><p class="muted small">Opción múltiple: ${responses[index].selected===questionData[index]?.correctIndex?'Correcta':'Incorrecta'}.</p></article>`).join('')}<div class="tool-button-row"><button class="btn btn-primary" type="button" data-tool-action="exam-close">Volver a mis planes</button><button class="btn btn-secondary" type="button" data-tool-action="exam-start" data-plan-id="${escapeHTML(plan.id)}">Repetir examen</button></div>`;
+        document.getElementById('examRunnerActions').innerHTML='';
+        renderExamPlans();
+        renderGamification();
+        toast(`Modelo de examen terminado: ${score}%.`,score>=70?'success':'');
+      }
+
       function renderPlanner() {
         if (!state.studyTools) return;
         populateStudyToolSubjectSelects();
@@ -4975,6 +5146,32 @@
         const id = button.dataset.id;
         if (!state.studyTools && action !== 'pomodoro-toggle') return;
         switch (action) {
+          case 'exam-session-toggle': {
+            const plan=state.studyTools.examPlans.find(item=>item.id===button.dataset.planId);
+            const session=plan?.sessions.find(item=>item.id===button.dataset.sessionId);
+            if(!plan||!session)break;
+            session.completed=!session.completed;
+            if(session.completed){recordStudyDay();awardStudyXP(5);}
+            await saveStudyTools(session.completed?'Sesión completada. +5 XP':'Sesión reabierta.');
+            renderExamPlans();renderGamification();break;
+          }
+          case 'exam-plan-delete': {
+            if(!confirm('¿Eliminar este plan y su historial de examen?'))break;
+            state.studyTools.examPlans=state.studyTools.examPlans.filter(item=>item.id!==button.dataset.planId);
+            await saveStudyTools('Plan eliminado.');renderExamPlans();break;
+          }
+          case 'exam-guides-toggle': {
+            const target=document.getElementById(`exam-guides-${button.dataset.planId}`);
+            if(target)target.hidden=!target.hidden;
+            button.textContent=target&&!target.hidden?'Ocultar guías':'Ver temas y respuestas';break;
+          }
+          case 'exam-start': beginModelExam(button.dataset.planId);break;
+          case 'exam-close': {
+            activeExamPlanId=null;activeExamResultVisible=false;
+            document.getElementById('examPlanRunner').hidden=true;
+            document.getElementById('examRunnerBody').innerHTML='';
+            renderExamPlans();break;
+          }
           case 'flashcard-form-toggle': showFlashcardForm(document.getElementById('flashcardForm').classList.contains('hidden')); break;
           case 'flashcard-reveal':
             if (state.studyTools.flashcards.length) { flashcardAnswerVisible = !flashcardAnswerVisible; renderFlashcards(); }
@@ -5107,6 +5304,28 @@
         try { await saveStudyTools('Cuestionario creado.'); event.target.reset(); renderQuizzes(); }
         catch (error) { toast(error.message, 'error'); }
       });
+      document.getElementById('examPlanForm').addEventListener('submit', async event => {
+        event.preventDefault();
+        if (!state.studyTools) return;
+        const title=document.getElementById('examPlanTitle').value.trim();
+        const examDate=document.getElementById('examPlanDate').value;
+        const dailyMinutes=Number(document.getElementById('examPlanMinutes').value);
+        if(!title||!examDate||!Number.isFinite(dailyMinutes)||dailyMinutes<10||dailyMinutes>360){toast('Revisá el nombre, la fecha y los minutos diarios.', 'error');return;}
+        try{
+          const plan=createExamPlan(title,document.getElementById('examPlanSubject').value,examDate,dailyMinutes,document.getElementById('examPlanLevel').value,document.getElementById('examPlanTopics').value);
+          state.studyTools.examPlans.push(plan);
+          await saveStudyTools('Plan de estudio creado.');
+          event.target.reset();
+          document.getElementById('examPlanMinutes').value='45';
+          document.getElementById('examPlanSubject').dataset.filled='';
+          renderExamPlans();
+          toast('Tu plan ya está listo. Completá las sesiones para desbloquear el modelo de examen.', 'success');
+        }catch(error){toast(error.message||'No se pudo crear el plan.', 'error');}
+      });
+      document.addEventListener('submit', event => {
+        if(event.target && event.target.id==='modelExamForm') submitModelExam(event).catch(error=>{console.error(error);toast('No se pudo corregir el examen.','error');});
+      });
+
       document.getElementById('plannerForm').addEventListener('submit', async event => {
         event.preventDefault();
         if (!state.studyTools) return;
